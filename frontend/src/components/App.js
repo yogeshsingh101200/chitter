@@ -1,6 +1,6 @@
 import React from "react";
 import Header from "./Header";
-import LoginForm from "./LoginForm";
+import Login from "./Login";
 import RegisterForm from "./RegisterForm";
 import {
     BrowserRouter as Router,
@@ -19,7 +19,7 @@ class App extends React.Component {
                         <Dashboard />
                     </Route>
                     <Route exact path="/login">
-                        <LoginForm />
+                        <Login />
                     </Route>
                     <Route exact path="/register">
                         <RegisterForm />

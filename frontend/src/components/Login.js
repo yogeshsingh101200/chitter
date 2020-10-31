@@ -3,9 +3,8 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
 import { Redirect } from "react-router-dom";
-import { ThemeConsumer } from "react-bootstrap/esm/ThemeProvider";
 
-export class LoginForm extends Component {
+export class Login extends Component {
 
     constructor(props) {
         super(props);
@@ -86,4 +85,4 @@ export class LoginForm extends Component {
     }
 }
 
-export default LoginForm;
+export default Login;
