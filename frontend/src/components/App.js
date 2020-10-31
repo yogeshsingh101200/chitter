@@ -7,6 +7,7 @@ import {
     Switch,
     Route,
 } from "react-router-dom";
+import Dashboard from "./Dashboard";
 
 class App extends React.Component {
     render() {
@@ -14,10 +15,13 @@ class App extends React.Component {
             <Router>
                 <Header />
                 <Switch>
-                    <Route path="/login">
+                    <Route exact path="/">
+                        <Dashboard />
+                    </Route>
+                    <Route exact path="/login">
                         <LoginForm />
                     </Route>
-                    <Route path="/register">
+                    <Route exact path="/register">
                         <RegisterForm />
                     </Route>
                 </Switch>
