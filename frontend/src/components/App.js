@@ -10,19 +10,44 @@ import {
 import Dashboard from "./Dashboard";
 
 class App extends React.Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            isAuthenticated: localStorage.getItem("token") ? true : false
+        };
+    }
+
+    componentDidMount() {
+        this.timerID = setInterval(() => this.update(), 0);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.timerID);
+    }
+
+    update = () => {
+        if (!localStorage.getItem("token") && this.state.isAuthenticated) {
+            this.setState({ isAuthenticated: false });
+        } else if (localStorage.getItem("token") && !this.state.isAuthenticated) {
+            this.setState({ isAuthenticated: true });
+        };
+    };
+
     render() {
         return (
             <Router>
-                <Header />
+                <Header isAuthenticated={this.state.isAuthenticated} />
                 <Switch>
                     <Route exact path="/">
-                        <Dashboard />
+                        <Dashboard isAuthenticated={this.state.isAuthenticated} />
                     </Route>
                     <Route exact path="/login">
-                        <Login />
+                        <Login isAuthenticated={this.state.isAuthenticated} />
                     </Route>
                     <Route exact path="/register">
-                        <RegisterForm />
+                        <RegisterForm isAuthenticated={this.state.isAuthenticated} />
                     </Route>
                 </Switch>
             </Router>

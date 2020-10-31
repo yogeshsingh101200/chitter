@@ -10,8 +10,7 @@ export class Login extends Component {
         super(props);
         this.state = {
             username: "",
-            password: "",
-            isAuthenticated: localStorage.getItem("token") ? true : false
+            password: ""
         };
     }
 
@@ -37,7 +36,6 @@ export class Login extends Component {
             .post("/api/auth/login", body, config)
             .then(res => {
                 localStorage.setItem("token", res.data.token);
-                this.setState({ isAuthenticated: true });
             })
             .catch(err => {
                 console.log("err.res.data=", err.response.data, "err.res.status=", err.response.status);
@@ -45,7 +43,7 @@ export class Login extends Component {
     };
 
     render() {
-        if (this.state.isAuthenticated) {
+        if (this.props.isAuthenticated) {
             return <Redirect to="/" />;
         } else {
             return (
@@ -61,6 +59,7 @@ export class Login extends Component {
                                 onChange={this.handleChange}
                                 placeholder="Enter username"
                                 autoFocus
+                                autoComplete="off"
                             />
                         </Form.Group>
 
