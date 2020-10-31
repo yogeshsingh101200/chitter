@@ -2,17 +2,25 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
+import Button from "react-bootstrap/Button";
+import logout from "./logout";
 
 export class Header extends Component {
     render() {
         let nav;
         if (this.props.isAuthenticated) {
             nav = (
-                <Nav className="mr-auto">
-                    <Nav.Link as={Link} to="/" className="font-weight-bold">
-                        All posts
-                    </Nav.Link>
-                </Nav>
+                <>
+                    <Nav className="mr-auto">
+                        <Nav.Link as={Link} to="/" className="font-weight-bold">
+                            All posts
+                        </Nav.Link>
+                    </Nav>
+                    <Navbar.Text>
+                        Logged in as, <span className="font-weight-bold">{this.props.username}</span>
+                    </Navbar.Text>
+                    <Button onClick={logout} variant="primary" className="ml-2">Logout</Button>
+                </>
             );
         } else {
             nav = (

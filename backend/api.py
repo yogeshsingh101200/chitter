@@ -1,4 +1,4 @@
-from .models import User, Post, Like, Connection
+from .models import Post, Like, Connection
 from .serializers import RegisterSerializer, LoginSerializer
 from .serializers import UserSerializer, PostSerializer, LikeSerializer, ConnectionSerializer
 from rest_framework import viewsets, permissions, generics
@@ -34,12 +34,14 @@ class LoginAPI(generics.GenericAPIView):
         })
 
 
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
+class UserAPI(generics.RetrieveAPIView):
     permission_classes = [
-        permissions.AllowAny
+        permissions.IsAuthenticated,
     ]
     serializer_class = UserSerializer
+
+    def get_object(self):
+        return self.request.user
 
 
 class PostViewSet(viewsets.ModelViewSet):
