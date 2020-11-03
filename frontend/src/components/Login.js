@@ -36,6 +36,7 @@ export class Login extends Component {
             .post("/api/auth/login", body, config)
             .then(res => {
                 localStorage.setItem("token", res.data.token);
+                localStorage.setItem("username", res.data.user.username);
             })
             .catch(err => {
                 console.log("err.res.data=", err.response.data, "err.res.status=", err.response.status);

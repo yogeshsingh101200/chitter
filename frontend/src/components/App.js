@@ -16,32 +16,13 @@ class App extends React.Component {
         super(props);
 
         this.state = {
-            username: null,
+            username: localStorage.getItem("username"),
             isAuthenticated: localStorage.getItem("token") ? true : false
         };
     }
 
     componentDidMount() {
         this.timerID = setInterval(() => this.update(), 0);
-
-        if (this.state.isAuthenticated) {
-            const config = {
-                headers: {
-                    "Authorization": `Token ${localStorage.getItem("token")}`
-                }
-            };
-
-            axios.
-                get("api/auth/user", config)
-                .then(res => {
-                    this.setState({ username: res.data.username });
-                })
-                .catch(err => {
-                    token = null;
-                    localStorage.removeItem("token");
-                });
-
-        }
     }
 
     componentWillUnmount() {
@@ -50,9 +31,15 @@ class App extends React.Component {
 
     update = () => {
         if (!localStorage.getItem("token") && this.state.isAuthenticated) {
-            this.setState({ isAuthenticated: false });
+            this.setState({
+                username: null,
+                isAuthenticated: false
+            });
         } else if (localStorage.getItem("token") && !this.state.isAuthenticated) {
-            this.setState({ isAuthenticated: true });
+            this.setState({
+                username: localStorage.getItem("username"),
+                isAuthenticated: true
+            });
         };
     };
 
