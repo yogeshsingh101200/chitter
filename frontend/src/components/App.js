@@ -8,7 +8,6 @@ import {
     Route,
 } from "react-router-dom";
 import Dashboard from "./Dashboard";
-import axios from "axios";
 
 class App extends React.Component {
 

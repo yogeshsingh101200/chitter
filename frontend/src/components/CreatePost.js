@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Button, Form } from "react-bootstrap";
 import axios from "axios";
+import Card from "react-bootstrap/Card";
 
 export class CreatePost extends Component {
 
@@ -38,6 +39,7 @@ export class CreatePost extends Component {
             .then(res => {
                 console.log("success");
                 this.setState({ content: "" });
+                this.props.refresh();
             })
             .catch(err => {
                 console.log(err.response.status, err.response.data);
@@ -46,21 +48,23 @@ export class CreatePost extends Component {
 
     render() {
         return (
-            <div className="container">
-                <Form className="mt-2" onSubmit={this.handleSubmit}>
-                    <h4>Create Post</h4>
-                    <Form.Control
-                        name="content"
-                        as="textarea"
-                        rows={3}
-                        value={this.state.content}
-                        onChange={this.handleChange}
-                    />
-                    <Button variant="primary" className="mt-2" type="submit">
-                        Post
-                    </Button>
-                </Form>
-            </div>
+            <Card className="post create-post">
+                <Card.Body>
+                    <Form onSubmit={this.handleSubmit}>
+                        <Form.Control
+                            name="content"
+                            as="textarea"
+                            rows={3}
+                            value={this.state.content}
+                            onChange={this.handleChange}
+                            placeholder="Write something..."
+                        />
+                        <Button variant="primary" className="mt-2" type="submit">
+                            Post
+                        </Button>
+                    </Form>
+                </Card.Body>
+            </Card>
         );
     }
 }

@@ -38,6 +38,14 @@ class PostSerializer(serializers.ModelSerializer):
         fields = ["content"]
 
 
+class PublicPostSerializer(serializers.ModelSerializer):
+    author = serializers.StringRelatedField()
+
+    class Meta:
+        model = Post
+        fields = "__all__"
+
+
 class LikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Like

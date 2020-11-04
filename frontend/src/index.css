@@ -1,6 +1,5 @@
 html, body, #app {
     height: 100%;
-    overflow: hidden;
 }
 
 .form-container {
@@ -20,7 +19,24 @@ html, body, #app {
 }
 
 textarea {
-    background-color: rgba(255, 255, 255, 0.6) !important;
-    color: white !important;
     resize: none;
+}
+
+.create-post .card-body {
+    padding: 1rem;
+}
+
+.post {
+    width: 45rem;
+    margin-top: 0.25rem;
+}
+
+.post:last-child {
+    margin-bottom: 1rem;
+}
+
+.feed {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }

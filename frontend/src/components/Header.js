@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Button from "react-bootstrap/Button";
@@ -12,8 +12,13 @@ export class Header extends Component {
             nav = (
                 <>
                     <Nav className="mr-auto">
-                        <Nav.Link as={Link} to="/" className="font-weight-bold">
-                            All posts
+                        <Nav.Link
+                            as={NavLink}
+                            to="/"
+                            className="font-weight-bold"
+                            activeClassName="active"
+                        >
+                            Home
                         </Nav.Link>
                     </Nav>
                     <Navbar.Text>
@@ -25,8 +30,20 @@ export class Header extends Component {
         } else {
             nav = (
                 <Nav className="ml-auto">
-                    <Nav.Link as={Link} to="/login" className="font-weight-bold">Login</Nav.Link>
-                    <Nav.Link as={Link} to="/register" className="font-weight-bold">Register</Nav.Link>
+                    <Nav.Link
+                        as={NavLink}
+                        to="/login"
+                        className="font-weight-bold"
+                    >
+                        Login
+                    </Nav.Link>
+                    <Nav.Link
+                        as={NavLink}
+                        to="/register"
+                        className="font-weight-bold"
+                    >
+                        Register
+                    </Nav.Link>
                 </Nav>
             );
         }

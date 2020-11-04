@@ -1,6 +1,7 @@
 from .models import Post, Like, Connection
 from .serializers import RegisterSerializer, LoginSerializer
 from .serializers import UserSerializer, PostSerializer, LikeSerializer, ConnectionSerializer
+from .serializers import PublicPostSerializer
 from rest_framework import viewsets, permissions, generics
 from rest_framework.response import Response
 from knox.models import AuthToken
@@ -42,6 +43,14 @@ class UserAPI(generics.RetrieveAPIView):
 
     def get_object(self):
         return self.request.user
+
+
+class PublicPostViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Post.objects.all()
+    permission_classes = [
+        permissions.AllowAny,
+    ]
+    serializer_class = PublicPostSerializer
 
 
 class PostViewSet(viewsets.ModelViewSet):
