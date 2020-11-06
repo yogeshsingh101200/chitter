@@ -22,7 +22,7 @@ export class Header extends Component {
                         </Nav.Link>
                     </Nav>
                     <Navbar.Text>
-                        Logged in as, <span className="font-weight-bold">{this.props.username}</span>
+                        Logged in as, <span className="font-weight-bold">{this.props.user.username}</span>
                     </Navbar.Text>
                     <Button onClick={logout} variant="primary" className="ml-2">Logout</Button>
                 </>

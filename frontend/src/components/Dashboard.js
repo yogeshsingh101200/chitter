@@ -25,7 +25,8 @@ export class Dashboard extends Component {
     };
 
     componentDidMount() {
-        this.refresh();
+        if (this.props.isAuthenticated)
+            this.refresh();
     }
 
     renderPosts = () => {
@@ -33,8 +34,12 @@ export class Dashboard extends Component {
         return posts.map(post => (
             <Post
                 key={post.id}
+                id={post.id}
                 author={post.author}
                 content={post.content}
+                likeCount={post.like_count}
+                likes={post.likes}
+                user={this.props.user}
             />)
         );
     };

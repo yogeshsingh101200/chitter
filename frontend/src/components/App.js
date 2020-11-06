@@ -8,6 +8,7 @@ import {
     Route,
 } from "react-router-dom";
 import Dashboard from "./Dashboard";
+import axios from "axios";
 
 class App extends React.Component {
 
@@ -15,10 +16,34 @@ class App extends React.Component {
         super(props);
 
         this.state = {
-            username: localStorage.getItem("username"),
-            isAuthenticated: localStorage.getItem("token") ? true : false
+            user: null,
+            isAuthenticated: false
         };
     }
+
+    authenticate = () => {
+        const token = localStorage.getItem("token");
+        const config = {
+            headers: {
+                "Authorization": `Token ${token}`,
+                "Accept": "application/json"
+            }
+        };
+
+        axios
+            .get("/api/auth/user", config)
+            .then(res => {
+                this.setState({
+                    user: res.data,
+                    isAuthenticated: true
+                });
+            })
+            .catch(err => {
+                localStorage.removeItem("token");
+                console.log(err.response.status);
+            });
+
+    };
 
     componentDidMount() {
         this.timerID = setInterval(() => this.update(), 0);
@@ -29,17 +54,10 @@ class App extends React.Component {
     }
 
     update = () => {
-        if (!localStorage.getItem("token") && this.state.isAuthenticated) {
-            this.setState({
-                username: null,
-                isAuthenticated: false
-            });
-        } else if (localStorage.getItem("token") && !this.state.isAuthenticated) {
-            this.setState({
-                username: localStorage.getItem("username"),
-                isAuthenticated: true
-            });
-        };
+        if (!localStorage.getItem("token") && this.state.isAuthenticated)
+            this.setState({ user: null, isAuthenticated: false });
+        else if (localStorage.getItem("token") && !this.state.isAuthenticated)
+            this.authenticate();
     };
 
     render() {
@@ -47,11 +65,11 @@ class App extends React.Component {
             <Router>
                 <Header
                     isAuthenticated={this.state.isAuthenticated}
-                    username={this.state.username}
+                    user={this.state.user}
                 />
                 <Switch>
                     <Route exact path="/">
-                        <Dashboard isAuthenticated={this.state.isAuthenticated} />
+                        <Dashboard isAuthenticated={this.state.isAuthenticated} user={this.state.user} />
                     </Route>
                     <Route exact path="/login">
                         <Login isAuthenticated={this.state.isAuthenticated} />

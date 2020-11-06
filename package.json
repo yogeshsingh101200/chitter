@@ -20,6 +20,9 @@
     "webpack-cli": "^4.1.0"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.32",
+    "@fortawesome/free-solid-svg-icons": "^5.15.1",
+    "@fortawesome/react-fontawesome": "^0.1.12",
     "axios": "^0.21.0",
     "bootswatch": "^4.5.3",
     "css-loader": "^5.0.0",

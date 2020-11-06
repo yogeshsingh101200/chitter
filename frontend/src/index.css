@@ -40,3 +40,36 @@ textarea {
     flex-direction: column;
     align-items: center;
 }
+
+/* like button CSS */
+
+.fa-heart {
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.active {
+    color: red;
+}
+
+.inactive {
+    color: white;
+}
+
+.fa-heart:active {
+    animation: size 0.4s;
+}
+
+@keyframes size {
+    0% {
+        font-size: 1rem
+    }
+    50% {
+        font-size: 1.25rem
+    }
+    100% {
+        font-size: 1rem
+    }
+}
+
+/* end of like button CSS*/

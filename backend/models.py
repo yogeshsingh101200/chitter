@@ -11,7 +11,6 @@ class Post(models.Model):
     content = models.CharField(max_length=150)
     author = models.ForeignKey(
         User, related_name="posts", on_delete=models.CASCADE, null=True)
-    like_count = models.PositiveIntegerField(blank=True, default=0)
 
 
 class Like(models.Model):
@@ -19,6 +18,9 @@ class Like(models.Model):
         User, on_delete=models.CASCADE, related_name="likes")
     on = models.ForeignKey(
         Post, on_delete=models.CASCADE, related_name="likes")
+
+    class Meta:
+        unique_together = ["by", "on"]
 
 
 class Connection(models.Model):

@@ -38,18 +38,23 @@ class PostSerializer(serializers.ModelSerializer):
         fields = ["content"]
 
 
-class PublicPostSerializer(serializers.ModelSerializer):
-    author = serializers.StringRelatedField()
-
-    class Meta:
-        model = Post
-        fields = "__all__"
-
-
 class LikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Like
         fields = "__all__"
+
+
+class PublicPostSerializer(serializers.ModelSerializer):
+    author = serializers.StringRelatedField()
+    like_count = serializers.SerializerMethodField(read_only=True)
+    likes = LikeSerializer(many=True)
+
+    class Meta:
+        model = Post
+        fields = ["id", "content", "author", "like_count", "likes"]
+
+    def get_like_count(self, post):
+        return post.likes.count()
 
 
 class ConnectionSerializer(serializers.ModelSerializer):

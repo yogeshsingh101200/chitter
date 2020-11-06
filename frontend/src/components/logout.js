@@ -13,7 +13,6 @@ const logout = () => {
     axios
         .post("/api/auth/logout", null, config)
         .then(res => {
-            localStorage.removeItem("username");
             localStorage.removeItem("token");
         })
         .catch(err => {
