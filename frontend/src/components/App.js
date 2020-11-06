@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "./Header";
 import Login from "./Login";
-import RegisterForm from "./RegisterForm";
+import Register from "./Register";
 import {
     BrowserRouter as Router,
     Switch,
@@ -75,7 +75,7 @@ class App extends React.Component {
                         <Login isAuthenticated={this.state.isAuthenticated} />
                     </Route>
                     <Route exact path="/register">
-                        <RegisterForm isAuthenticated={this.state.isAuthenticated} />
+                        <Register isAuthenticated={this.state.isAuthenticated} />
                     </Route>
                 </Switch>
             </Router>
