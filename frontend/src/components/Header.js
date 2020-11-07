@@ -3,7 +3,6 @@ import { Link, NavLink } from "react-router-dom";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Button from "react-bootstrap/Button";
-import logout from "./logout";
 
 export class Header extends Component {
     render() {
@@ -24,7 +23,7 @@ export class Header extends Component {
                     <Navbar.Text>
                         Logged in as, <span className="font-weight-bold">{this.props.user.username}</span>
                     </Navbar.Text>
-                    <Button onClick={logout} variant="primary" className="ml-2">Logout</Button>
+                    <Button onClick={() => { this.props.authentication("LOGOUT"); }} variant="primary" className="ml-2">Logout</Button>
                 </>
             );
         } else {

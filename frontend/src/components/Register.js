@@ -38,6 +38,7 @@ export class Register extends Component {
                 .post("/api/auth/register", body, config)
                 .then(res => {
                     localStorage.setItem("token", res.data.token);
+                    this.props.authentication("LOGIN", res.data.user);
                 })
                 .catch(err => {
                     console.log("err.res.data=", err.response.data, "err.res.status=", err.response.status);

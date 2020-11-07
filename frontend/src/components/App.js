@@ -21,43 +21,66 @@ class App extends React.Component {
         };
     }
 
-    authenticate = () => {
-        const token = localStorage.getItem("token");
-        const config = {
-            headers: {
-                "Authorization": `Token ${token}`,
-                "Accept": "application/json"
-            }
-        };
+    componentDidMount() {
+        if (localStorage.getItem("token")) {
+            const token = localStorage.getItem("token");
+            const config = {
+                headers: {
+                    "Authorization": `Token ${token}`,
+                    "Accept": "application/json"
+                }
+            };
 
-        axios
-            .get("/api/auth/user", config)
-            .then(res => {
+            axios
+                .get("/api/auth/user", config)
+                .then(res => {
+                    this.setState({
+                        user: res.data,
+                        isAuthenticated: true
+                    });
+                })
+                .catch(err => {
+                    localStorage.removeItem("token");
+                    console.log(err.response.status);
+                });
+        }
+    }
+
+    authentication = (action, user = null) => {
+        switch (action) {
+            case "LOGIN":
                 this.setState({
-                    user: res.data,
+                    user: user,
                     isAuthenticated: true
                 });
-            })
-            .catch(err => {
-                localStorage.removeItem("token");
-                console.log(err.response.status);
-            });
+                break;
+            case "LOGOUT":
+                const token = localStorage.getItem("token");
+                const config = {
+                    headers: {}
+                };
 
-    };
+                if (token) {
+                    config.headers["Authorization"] = `Token ${token}`;
+                }
 
-    componentDidMount() {
-        this.timerID = setInterval(() => this.update(), 0);
-    }
-
-    componentWillUnmount() {
-        clearInterval(this.timerID);
-    }
-
-    update = () => {
-        if (!localStorage.getItem("token") && this.state.isAuthenticated)
-            this.setState({ user: null, isAuthenticated: false });
-        else if (localStorage.getItem("token") && !this.state.isAuthenticated)
-            this.authenticate();
+                axios
+                    .post("/api/auth/logout", null, config)
+                    .then(res => {
+                        localStorage.removeItem("token");
+                        this.setState({
+                            user: null,
+                            isAuthenticated: false
+                        });
+                    })
+                    .catch(err => {
+                        console.log("err.res.status=", err.response.status, "err.res.data=", err.response.data);
+                    });
+                break;
+            default:
+                console.log("TODO");
+                break;
+        }
     };
 
     render() {
@@ -66,16 +89,26 @@ class App extends React.Component {
                 <Header
                     isAuthenticated={this.state.isAuthenticated}
                     user={this.state.user}
+                    authentication={this.authentication}
                 />
                 <Switch>
                     <Route exact path="/">
-                        <Dashboard isAuthenticated={this.state.isAuthenticated} user={this.state.user} />
+                        <Dashboard
+                            isAuthenticated={this.state.isAuthenticated}
+                            user={this.state.user}
+                        />
                     </Route>
                     <Route exact path="/login">
-                        <Login isAuthenticated={this.state.isAuthenticated} />
+                        <Login
+                            isAuthenticated={this.state.isAuthenticated}
+                            authentication={this.authentication}
+                        />
                     </Route>
                     <Route exact path="/register">
-                        <Register isAuthenticated={this.state.isAuthenticated} />
+                        <Register
+                            isAuthenticated={this.state.isAuthenticated}
+                            authentication={this.authentication}
+                        />
                     </Route>
                 </Switch>
             </Router>
