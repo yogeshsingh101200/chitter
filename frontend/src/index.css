@@ -31,6 +31,14 @@ textarea {
     margin-top: 0.25rem;
 }
 
+@media (max-width: 480px) {
+    .post {
+        width: 100%;
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+}
+
 .post:last-child {
     margin-bottom: 1rem;
 }

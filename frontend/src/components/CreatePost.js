@@ -54,7 +54,7 @@ export class CreatePost extends Component {
                         <Form.Control
                             name="content"
                             as="textarea"
-                            rows={3}
+                            rows={4}
                             value={this.state.content}
                             onChange={this.handleChange}
                             placeholder="Write something..."
