@@ -8,9 +8,12 @@ class User(AbstractUser):
 
 
 class Post(models.Model):
-    content = models.CharField(max_length=150)
+    content = models.CharField(max_length=250)
     author = models.ForeignKey(
         User, related_name="posts", on_delete=models.CASCADE, null=True)
+
+    def __str__(self):
+        return f"{self.author}: {self.content}"
 
 
 class Like(models.Model):
