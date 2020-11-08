@@ -14,7 +14,6 @@ export class Dashboard extends Component {
     }
 
     refresh = () => {
-        console.log("inside regresh");
         axios
             .get("/api/allposts")
             .then(res => {

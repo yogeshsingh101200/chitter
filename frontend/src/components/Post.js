@@ -7,7 +7,6 @@ export class Post extends Component {
 
     constructor(props) {
         super(props);
-        console.log("inside Post const.");
         this.state = {
             isEditing: false
         };
@@ -24,7 +23,6 @@ export class Post extends Component {
     };
 
     render() {
-        console.log("inside post render");
         let body = null;
         if (this.state.isEditing) {
             body = (
