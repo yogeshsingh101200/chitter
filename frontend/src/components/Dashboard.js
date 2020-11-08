@@ -14,6 +14,7 @@ export class Dashboard extends Component {
     }
 
     refresh = () => {
+        console.log("inside regresh");
         axios
             .get("/api/allposts")
             .then(res => {
@@ -40,6 +41,7 @@ export class Dashboard extends Component {
                 likeCount={post.like_count}
                 likes={post.likes}
                 user={this.props.user}
+                refresh={this.refresh}
             />)
         );
     };

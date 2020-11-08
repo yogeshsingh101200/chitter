@@ -83,7 +83,7 @@ class Like extends Component {
 
     render() {
         return (
-            <div className="d-flex flex-row align-items-center">
+            <>
                 <div className="p-0">
                     <FontAwesomeIcon
                         icon={faHeart}
@@ -92,7 +92,7 @@ class Like extends Component {
                     />
                 </div>
                 <div className="ml-2 p-0">{this.state.likeCount}</div>
-            </div>
+            </>
         );
     }
 }
