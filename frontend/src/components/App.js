@@ -9,6 +9,7 @@ import {
 } from "react-router-dom";
 import Dashboard from "./Dashboard";
 import axios from "axios";
+import Profile from "./Profile";
 
 class App extends React.Component {
 
@@ -98,6 +99,12 @@ class App extends React.Component {
                             user={this.state.user}
                         />
                     </Route>
+                    <Route exact path={`/user/:username`}>
+                        <Profile
+                            isAuthenticated={this.state.isAuthenticated}
+                            authenticatedUser={this.state.user}
+                        />
+                    </Route>
                     <Route exact path="/login">
                         <Login
                             isAuthenticated={this.state.isAuthenticated}
@@ -111,7 +118,7 @@ class App extends React.Component {
                         />
                     </Route>
                 </Switch>
-            </Router>
+            </Router >
         );
     }
 }

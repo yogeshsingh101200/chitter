@@ -4,9 +4,18 @@ from django.contrib.auth import authenticate
 
 
 class UserSerializer(serializers.ModelSerializer):
+    followers_count = serializers.SerializerMethodField(read_only=True)
+    following_count = serializers.SerializerMethodField(read_only=True)
+
     class Meta:
         model = User
         fields = ["id", "username", "followers_count", "following_count"]
+
+    def get_followers_count(self, user):
+        return user.followers.count()
+
+    def get_following_count(self, user):
+        return user.following.count()
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -60,4 +69,4 @@ class PublicPostSerializer(serializers.ModelSerializer):
 class ConnectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Connection
-        fields = "__all__"
+        fields = ["follows"]

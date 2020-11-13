@@ -26,27 +26,21 @@ textarea {
     padding: 1rem;
 }
 
-.post {
+.post, .profile {
     width: 35rem;
     margin-top: 0.25rem;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 @media (max-width: 480px) {
-    .post {
+    .post, .profile {
         width: 95%;
-        margin-left: auto;
-        margin-right: auto;
     }
 }
 
 .post:last-child {
     margin-bottom: 1rem;
-}
-
-.feed {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 }
 
 /* like button CSS */
@@ -81,3 +75,11 @@ textarea {
 }
 
 /* end of like button CSS*/
+
+.dropdown-toggle::after {
+    display: none !important;
+}
+
+.stats {
+    color: white;
+}

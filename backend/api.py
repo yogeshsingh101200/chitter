@@ -1,4 +1,4 @@
-from .models import Post, Like, Connection
+from .models import Post, Like, Connection, User
 from .serializers import RegisterSerializer, LoginSerializer
 from .serializers import UserSerializer, PostSerializer, LikeSerializer, ConnectionSerializer
 from .serializers import PublicPostSerializer
@@ -45,12 +45,33 @@ class UserAPI(generics.RetrieveAPIView):
         return self.request.user
 
 
+class UserViewSet(viewsets.ReadOnlyModelViewSet):
+    permission_classes = [
+        permissions.AllowAny
+    ]
+    serializer_class = UserSerializer
+
+    def get_queryset(self):
+        username = self.request.query_params.get('username', None)
+        queryset = []
+        if username is not None:
+            queryset = User.objects.filter(username=username)
+        return queryset
+
+
 class PublicPostViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Post.objects.all()
     permission_classes = [
         permissions.AllowAny,
     ]
     serializer_class = PublicPostSerializer
+
+    def get_queryset(self):
+        queryset = Post.objects.all()
+        author = self.request.query_params.get('author', None)
+        if author is not None:
+            queryset = Post.objects.filter(author=author)
+        return queryset
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -75,8 +96,13 @@ class LikeViewSet(viewsets.ModelViewSet):
 
 
 class ConnectionViewSet(viewsets.ModelViewSet):
-    queryset = Connection.objects.all()
     permission_classes = [
-        permissions.AllowAny
+        permissions.IsAuthenticated
     ]
     serializer_class = ConnectionSerializer
+
+    def get_queryset(self):
+        return Connection.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)

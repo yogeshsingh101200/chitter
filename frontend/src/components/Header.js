@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { Link, NavLink } from "react-router-dom";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
-import Button from "react-bootstrap/Button";
+import Dropdown from "react-bootstrap/Dropdown";
+import DropdownButton from "react-bootstrap/DropdownButton";
 
 export class Header extends Component {
     render() {
@@ -13,17 +14,32 @@ export class Header extends Component {
                     <Nav className="mr-auto">
                         <Nav.Link
                             as={NavLink}
+                            exact
                             to="/"
                             className="font-weight-bold"
-                            activeClassName="active"
                         >
                             Home
                         </Nav.Link>
                     </Nav>
-                    <Navbar.Text>
-                        Logged in as, <span className="font-weight-bold">{this.props.user.username}</span>
-                    </Navbar.Text>
-                    <Button onClick={() => { this.props.authentication("LOGOUT"); }} variant="primary" className="ml-2">Logout</Button>
+                    <Nav className="ml-auto">
+                        <DropdownButton
+                            title={this.props.user.username}
+                            menuAlign="right"
+                        >
+                            <Dropdown.Item
+                                as={NavLink}
+                                exact
+                                to={`/user/${this.props.user.username}`}
+                            >
+                                Profile
+                            </Dropdown.Item>
+                            <Dropdown.Item
+                                onClick={() => { this.props.authentication("LOGOUT"); }}
+                            >
+                                Logout
+                            </Dropdown.Item>
+                        </DropdownButton>
+                    </Nav>
                 </>
             );
         } else {

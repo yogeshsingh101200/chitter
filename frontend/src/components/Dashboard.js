@@ -50,10 +50,10 @@ export class Dashboard extends Component {
             return <Redirect to="/login" />;
         } else {
             return (
-                <div className="feed">
+                <>
                     <CreatePost refresh={this.refresh} />
                     {this.renderPosts()}
-                </div>
+                </>
             );
         }
     }

@@ -3,8 +3,7 @@ from django.db import models
 
 
 class User(AbstractUser):
-    followers_count = models.PositiveIntegerField(blank=True, default=0)
-    following_count = models.PositiveIntegerField(blank=True, default=0)
+    pass
 
 
 class Post(models.Model):
@@ -27,6 +26,7 @@ class Like(models.Model):
 
 
 class Connection(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="following")
     follows = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="followers")
