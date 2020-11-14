@@ -3,13 +3,28 @@ from .models import User, Post, Like, Connection
 from django.contrib.auth import authenticate
 
 
+class ConnectionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Connection
+        fields = "__all__"
+        read_only_fields = ["user"]
+
+    def validate(self, attrs):
+        user = self.context["request"].user
+        if user == attrs["follows"]:
+            raise serializers.ValidationError("A user can't follow itself!")
+        return attrs
+
+
 class UserSerializer(serializers.ModelSerializer):
+    followers = ConnectionSerializer(many=True, read_only=True)
     followers_count = serializers.SerializerMethodField(read_only=True)
     following_count = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = User
-        fields = ["id", "username", "followers_count", "following_count"]
+        fields = ["id", "username", "followers",
+                  "followers_count", "following_count"]
 
     def get_followers_count(self, user):
         return user.followers.count()
@@ -56,7 +71,7 @@ class LikeSerializer(serializers.ModelSerializer):
 class PublicPostSerializer(serializers.ModelSerializer):
     author = serializers.StringRelatedField()
     like_count = serializers.SerializerMethodField(read_only=True)
-    likes = LikeSerializer(many=True)
+    likes = LikeSerializer(many=True, read_only=True)
 
     class Meta:
         model = Post
@@ -64,9 +79,3 @@ class PublicPostSerializer(serializers.ModelSerializer):
 
     def get_like_count(self, post):
         return post.likes.count()
-
-
-class ConnectionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Connection
-        fields = ["follows"]

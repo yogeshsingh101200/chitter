@@ -4,7 +4,7 @@ import axios from "axios";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Post from "./Post";
-
+import Follow from "./Follow";
 
 class ProfilePage extends Component {
     constructor(props) {
@@ -44,6 +44,17 @@ class ProfilePage extends Component {
         this.getData();
     }
 
+    refreshProfileCard = () => {
+        axios
+            .get(`/api/user/?username=${this.props.username}`)
+            .then(res => {
+                this.setState({ user: res.data[0] });
+            })
+            .catch(err => {
+                console.log(err.response.status);
+            });
+    };
+
     renderProfileCard = () => {
         return (
             <Card className="profile">
@@ -52,7 +63,12 @@ class ProfilePage extends Component {
                         <Card.Title>@{this.state.user.username}</Card.Title>
                         {
                             this.state.user.username !== this.props.authenticatedUser.username ?
-                                <Button className="follow-btn" variant="success" size="sm">Follow</Button>
+                                <Follow
+                                    connections={this.state.user.followers}
+                                    authenticatedUser={this.props.authenticatedUser.id}
+                                    user={this.state.user.id}
+                                    refreshProfileCard={this.refreshProfileCard}
+                                />
                                 : ""
                         }
                     </div>

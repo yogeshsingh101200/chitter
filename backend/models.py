@@ -30,3 +30,6 @@ class Connection(models.Model):
         User, on_delete=models.CASCADE, related_name="following")
     follows = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="followers")
+
+    class Meta:
+        unique_together = ["user", "follows"]
