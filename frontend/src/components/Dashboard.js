@@ -14,13 +14,26 @@ export class Dashboard extends Component {
     }
 
     refresh = () => {
+        const url = this.props.filter ? "/api/following" : "/api/allposts";
+
+        const config = {
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        if (this.props.filter) {
+            const token = localStorage.getItem("token");
+            config.headers["Authorization"] = `Token ${token}`;
+        }
+
         axios
-            .get("/api/allposts")
+            .get(url, config)
             .then(res => {
                 this.setState({ posts: res.data });
             })
             .catch(err => {
-                console.log(err.response.status);
+                console.log(err.response.status, err.response.data);
             });
     };
 
@@ -45,16 +58,30 @@ export class Dashboard extends Component {
         );
     };
 
+    componentDidUpdate(prevProps) {
+        if (prevProps.filter !== this.props.filter) {
+            this.refresh();
+        }
+    }
+
     render() {
         if (!this.props.isAuthenticated) {
             return <Redirect to="/login" />;
         } else {
-            return (
-                <>
-                    <CreatePost refresh={this.refresh} />
-                    {this.renderPosts()}
-                </>
-            );
+            if (this.props.filter) {
+                return (
+                    <>
+                        {this.renderPosts()}
+                    </>
+                );
+            } else {
+                return (
+                    <>
+                        <CreatePost refresh={this.refresh} />
+                        {this.renderPosts()}
+                    </>
+                );
+            }
         }
     }
 }

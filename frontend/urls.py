@@ -5,5 +5,6 @@ urlpatterns = [
     path('', index),
     path('login', index),
     path('register', index),
+    path('following', index),
     re_path('^user/.*', index)
 ]

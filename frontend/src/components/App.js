@@ -97,6 +97,14 @@ class App extends React.Component {
                         <Dashboard
                             isAuthenticated={this.state.isAuthenticated}
                             user={this.state.user}
+                            filter={false}
+                        />
+                    </Route>
+                    <Route exact path="/following">
+                        <Dashboard
+                            isAuthenticated={this.state.isAuthenticated}
+                            user={this.state.user}
+                            filter={true}
                         />
                     </Route>
                     <Route exact path={`/user/:username`}>

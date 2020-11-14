@@ -20,6 +20,14 @@ export class Header extends Component {
                         >
                             Home
                         </Nav.Link>
+                        <Nav.Link
+                            as={NavLink}
+                            exact
+                            to="/following"
+                            className="font-weight-bold"
+                        >
+                            Following
+                        </Nav.Link>
                     </Nav>
                     <Nav className="ml-auto">
                         <DropdownButton

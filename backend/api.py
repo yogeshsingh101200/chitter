@@ -45,6 +45,19 @@ class UserAPI(generics.RetrieveAPIView):
         return self.request.user
 
 
+class FollowingAPI(generics.ListAPIView):
+    permission_classes = [
+        permissions.IsAuthenticated,
+    ]
+    serializer_class = PublicPostSerializer
+
+    def get_queryset(self):
+        queryset = []
+        for record in Connection.objects.filter(user=self.request.user):
+            queryset += list(record.follows.posts.all())
+        return queryset
+
+
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [
         permissions.AllowAny
@@ -68,7 +81,7 @@ class PublicPostViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         queryset = Post.objects.all()
-        author = self.request.query_params.get('author', None)
+        author = self.request.query_params.get("author", None)
         if author is not None:
             queryset = Post.objects.filter(author=author)
         return queryset
