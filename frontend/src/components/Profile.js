@@ -2,15 +2,19 @@ import React, { Component, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import Card from "react-bootstrap/Card";
-import Button from "react-bootstrap/Button";
 import Post from "./Post";
 import Follow from "./Follow";
+import Pagination from 'react-bootstrap/Pagination';
+
 
 class ProfilePage extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
+            next: false,
+            previous: false,
+            offset: 0,
             user: null,
             posts: []
         };
@@ -21,13 +25,22 @@ class ProfilePage extends Component {
             .get(`/api/user/?username=${this.props.username}`)
             .then(res => {
                 const user = res.data[0];
+                const config = {
+                    params: {
+                        "author": user.id,
+                        "limit": 5,
+                        "offset": this.state.offset
+                    }
+                };
                 axios
-                    .get(`/api/allposts/?author=${user.id}`)
+                    .get("/api/allposts", config)
                     .then(res => {
                         this.setState(
                             {
+                                next: res.data.next ? true : false,
+                                previous: res.data.previous ? true : false,
                                 user: user,
-                                posts: res.data
+                                posts: res.data.results
                             }
                         );
                     })
@@ -84,10 +97,24 @@ class ProfilePage extends Component {
     };
 
     refreshPosts = () => {
+        const config = {
+            params: {
+                "author": this.state.user.id,
+                "limit": 5,
+                "offset": this.state.offset
+            }
+        };
+
         axios
-            .get(`/api/allposts/?author=${this.state.user.id}`)
+            .get("/api/allposts", config)
             .then(res => {
-                this.setState({ posts: res.data });
+                this.setState(
+                    {
+                        next: res.data.next ? true : false,
+                        previous: res.data.previous ? true : false,
+                        posts: res.data.results
+                    }
+                );
             })
             .catch(err => {
                 console.log(err.response.status);
@@ -110,15 +137,44 @@ class ProfilePage extends Component {
         );
     };
 
+    handlePrevious = () => {
+        this.setState(state => ({ offset: state.offset - 5 }));
+    };
+
+    handleNext = () => {
+        this.setState(state => ({ offset: state.offset + 5 }));
+    };
+
+    resetStates = () => {
+        this.setState({
+            next: false,
+            previous: false,
+            offset: 0,
+            user: null,
+            posts: []
+        });
+        this.getData();
+    };
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.username !== this.props.username) {
+            this.resetStates();
+        }
+        if (prevState.offset !== this.state.offset) {
+            this.refreshPosts();
+        }
+    }
+
     render() {
         if (this.state.user) {
-            if (this.state.user.username !== this.props.username) {
-                this.getData();
-            }
             return (
                 <>
                     {this.renderProfileCard()}
                     {this.renderPosts()}
+                    <Pagination className="my-2 justify-content-center">
+                        <Pagination.Item onClick={this.handlePrevious} disabled={!this.state.previous}>Previous</Pagination.Item>
+                        <Pagination.Item onClick={this.handleNext} disabled={!this.state.next}>Next</Pagination.Item>
+                    </Pagination>
                 </>
             );
         } else {

@@ -3,12 +3,16 @@ import { Redirect } from "react-router-dom";
 import CreatePost from "./CreatePost";
 import Post from "./Post";
 import axios from "axios";
+import Pagination from 'react-bootstrap/Pagination';
 
 export class Dashboard extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
+            next: false,
+            previous: false,
+            offset: 0,
             posts: []
         };
     }
@@ -17,6 +21,10 @@ export class Dashboard extends Component {
         const url = this.props.filter ? "/api/following" : "/api/allposts";
 
         const config = {
+            params: {
+                "limit": 5,
+                "offset": this.state.offset
+            },
             headers: {
                 "Accept": "application/json"
             }
@@ -30,7 +38,13 @@ export class Dashboard extends Component {
         axios
             .get(url, config)
             .then(res => {
-                this.setState({ posts: res.data });
+                this.setState(
+                    {
+                        next: res.data.next ? true : false,
+                        previous: res.data.previous ? true : false,
+                        posts: res.data.results
+                    }
+                );
             })
             .catch(err => {
                 console.log(err.response.status, err.response.data);
@@ -58,30 +72,49 @@ export class Dashboard extends Component {
         );
     };
 
-    componentDidUpdate(prevProps) {
+    resetStates = () => {
+        this.setState({
+            next: false,
+            previous: false,
+            offset: 0,
+            posts: []
+        });
+        this.refresh();
+    };
+
+    componentDidUpdate(prevProps, prevState) {
         if (prevProps.filter !== this.props.filter) {
+            this.resetStates();
+        }
+        if (prevState.offset !== this.state.offset) {
             this.refresh();
         }
     }
+
+    handlePrevious = () => {
+        this.setState(state => ({ offset: state.offset - 5 }));
+    };
+
+    handleNext = () => {
+        this.setState(state => ({ offset: state.offset + 5 }));
+    };
 
     render() {
         if (!this.props.isAuthenticated) {
             return <Redirect to="/login" />;
         } else {
-            if (this.props.filter) {
-                return (
-                    <>
-                        {this.renderPosts()}
-                    </>
-                );
-            } else {
-                return (
-                    <>
+            return (
+                <>
+                    {!this.props.filter ?
                         <CreatePost refresh={this.refresh} />
-                        {this.renderPosts()}
-                    </>
-                );
-            }
+                        : ""}
+                    {this.renderPosts()}
+                    <Pagination className="my-2 justify-content-center">
+                        <Pagination.Item onClick={this.handlePrevious} disabled={!this.state.previous}>Previous</Pagination.Item>
+                        <Pagination.Item onClick={this.handleNext} disabled={!this.state.next}>Next</Pagination.Item>
+                    </Pagination>
+                </>
+            );
         }
     }
 }

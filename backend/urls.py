@@ -7,7 +7,6 @@ from knox import views as knox_views
 router = routers.DefaultRouter(trailing_slash=False)
 router.register("api/posts", PostViewSet, "posts")
 router.register("api/allposts", PublicPostViewSet, "public_posts")
-router.register("api/allposts/", PublicPostViewSet, "public_posts")
 router.register("api/likes", LikeViewSet, "likes")
 router.register("api/user/", UserViewSet, "user")
 router.register("api/connections", ConnectionViewSet, "connections")

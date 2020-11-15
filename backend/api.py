@@ -5,6 +5,7 @@ from .serializers import PublicPostSerializer
 from rest_framework import viewsets, permissions, generics
 from rest_framework.response import Response
 from knox.models import AuthToken
+from rest_framework.pagination import LimitOffsetPagination
 
 
 class RegisterAPI(generics.GenericAPIView):
@@ -46,6 +47,7 @@ class UserAPI(generics.RetrieveAPIView):
 
 
 class FollowingAPI(generics.ListAPIView):
+    pagination_class = LimitOffsetPagination
     permission_classes = [
         permissions.IsAuthenticated,
     ]
@@ -73,6 +75,7 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class PublicPostViewSet(viewsets.ReadOnlyModelViewSet):
+    pagination_class = LimitOffsetPagination
     queryset = Post.objects.all()
     permission_classes = [
         permissions.AllowAny,
