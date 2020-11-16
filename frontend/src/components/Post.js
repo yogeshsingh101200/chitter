@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Card from "react-bootstrap/Card";
 import Like from "./Like";
 import EditPost from "./EditPost";
+import { DateTime } from "luxon";
 
 export class Post extends Component {
 
@@ -37,7 +38,13 @@ export class Post extends Component {
             body = (
                 <Card.Body>
                     <Card.Title>{this.props.author}</Card.Title>
-                    <Card.Subtitle className="mb-2 text-muted">4-Nov-2020 5:42</Card.Subtitle>
+                    <Card.Subtitle className="mb-2 text-muted">
+                        {
+                            DateTime
+                                .fromISO(this.props.created_at)
+                                .toLocaleString(DateTime.DATETIME_MED_WITH_SECONDS)
+                        }
+                    </Card.Subtitle>
                     <Card.Text>
                         {this.props.content}
                     </Card.Text>

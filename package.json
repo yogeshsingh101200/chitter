@@ -26,6 +26,7 @@
     "axios": "^0.21.0",
     "bootswatch": "^4.5.3",
     "css-loader": "^5.0.0",
+    "luxon": "^1.25.0",
     "postcss-loader": "^4.0.4",
     "prop-types": "^15.7.2",
     "react": "^17.0.1",

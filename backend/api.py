@@ -6,6 +6,7 @@ from rest_framework import viewsets, permissions, generics
 from rest_framework.response import Response
 from knox.models import AuthToken
 from rest_framework.pagination import LimitOffsetPagination
+import operator
 
 
 class RegisterAPI(generics.GenericAPIView):
@@ -57,7 +58,7 @@ class FollowingAPI(generics.ListAPIView):
         queryset = []
         for record in Connection.objects.filter(user=self.request.user):
             queryset += list(record.follows.posts.all())
-        return queryset
+        return sorted(queryset, key=operator.attrgetter("created_at"), reverse=True)
 
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
@@ -83,10 +84,11 @@ class PublicPostViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = PublicPostSerializer
 
     def get_queryset(self):
-        queryset = Post.objects.all()
+        queryset = Post.objects.all().order_by("-created_at")
         author = self.request.query_params.get("author", None)
         if author is not None:
-            queryset = Post.objects.filter(author=author)
+            queryset = Post.objects.filter(
+                author=author).order_by("-created_at")
         return queryset
 
 

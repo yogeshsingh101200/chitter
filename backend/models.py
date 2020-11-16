@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.utils import timezone
 
 
 class User(AbstractUser):
@@ -10,6 +11,7 @@ class Post(models.Model):
     content = models.CharField(max_length=250)
     author = models.ForeignKey(
         User, related_name="posts", on_delete=models.CASCADE, null=True)
+    created_at = models.DateTimeField(default=timezone.now, blank=True)
 
     def __str__(self):
         return f"{self.author}: {self.content}"

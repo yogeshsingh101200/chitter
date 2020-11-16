@@ -122,13 +122,14 @@ class ProfilePage extends Component {
     };
 
     renderPosts = () => {
-        const posts = this.state.posts.slice().reverse();
+        const posts = this.state.posts.slice();
         return posts.map(post => (
             <Post
                 key={post.id}
                 id={post.id}
                 author={post.author}
                 content={post.content}
+                created_at={post.created_at}
                 likeCount={post.like_count}
                 likes={post.likes}
                 user={this.props.authenticatedUser}
