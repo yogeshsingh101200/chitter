@@ -41,7 +41,7 @@ export class Follow extends Component {
         };
 
         axios
-            .post("/api/connections", body, config)
+            .post("/api/auth/connections", body, config)
             .then(res => {
                 this.setState({
                     id: res.data.id,
@@ -64,7 +64,7 @@ export class Follow extends Component {
         };
 
         axios
-            .delete(`/api/connections/${this.state.id}`, config)
+            .delete(`/api/auth/connections/${this.state.id}`, config)
             .then(res => {
                 this.setState({
                     id: null,

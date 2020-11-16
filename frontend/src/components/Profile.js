@@ -21,8 +21,13 @@ class ProfilePage extends Component {
     }
 
     getData = () => {
+        const config = {
+            params: {
+                "username": this.props.username
+            }
+        };
         axios
-            .get(`/api/user/?username=${this.props.username}`)
+            .get("/api/users", config)
             .then(res => {
                 const user = res.data[0];
                 const config = {
@@ -33,7 +38,7 @@ class ProfilePage extends Component {
                     }
                 };
                 axios
-                    .get("/api/allposts", config)
+                    .get("/api/posts", config)
                     .then(res => {
                         this.setState(
                             {
@@ -58,8 +63,14 @@ class ProfilePage extends Component {
     }
 
     refreshProfileCard = () => {
+        const config = {
+            params: {
+                "username": this.props.username
+            }
+        };
+
         axios
-            .get(`/api/user/?username=${this.props.username}`)
+            .get("/api/users", config)
             .then(res => {
                 this.setState({ user: res.data[0] });
             })
@@ -106,7 +117,7 @@ class ProfilePage extends Component {
         };
 
         axios
-            .get("/api/allposts", config)
+            .get("/api/posts", config)
             .then(res => {
                 this.setState(
                     {

@@ -5,11 +5,11 @@ from django.urls import path, include
 from knox import views as knox_views
 
 router = routers.DefaultRouter(trailing_slash=False)
-router.register("api/posts", PostViewSet, "posts")
-router.register("api/allposts", PublicPostViewSet, "public_posts")
-router.register("api/likes", LikeViewSet, "likes")
-router.register("api/user/", UserViewSet, "user")
-router.register("api/connections", ConnectionViewSet, "connections")
+router.register("api/auth/posts", PostViewSet, "posts")
+router.register("api/posts", PublicPostViewSet, "public_posts")
+router.register("api/auth/likes", LikeViewSet, "likes")
+router.register("api/users", UserViewSet, "user")
+router.register("api/auth/connections", ConnectionViewSet, "connections")
 
 urlpatterns = [
     path("", include(router.urls)),
@@ -18,5 +18,5 @@ urlpatterns = [
     path("api/auth/login", LoginAPI.as_view()),
     path("api/auth/logout", knox_views.LogoutView.as_view()),
     path("api/auth/user", UserAPI.as_view()),
-    path("api/following", FollowingAPI.as_view())
+    path("api/auth/following/posts", FollowingAPI.as_view()),
 ]

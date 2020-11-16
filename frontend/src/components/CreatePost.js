@@ -35,7 +35,7 @@ export class CreatePost extends Component {
         };
 
         axios
-            .post("api/posts", body, config)
+            .post("api/auth/posts", body, config)
             .then(res => {
                 console.log("success");
                 this.setState({ content: "" });

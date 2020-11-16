@@ -39,7 +39,7 @@ class Like extends Component {
             };
 
             axios
-                .delete(`/api/likes/${this.state.likeID}`, config)
+                .delete(`/api/auth/likes/${this.state.likeID}`, config)
                 .then(res => {
                     this.setState(state => ({
                         likeID: null,
@@ -66,7 +66,7 @@ class Like extends Component {
             };
 
             axios
-                .post("/api/likes", body, config)
+                .post("/api/auth/likes", body, config)
                 .then(res => {
                     this.setState(state => ({
                         likeID: res.data.id,

@@ -18,7 +18,7 @@ export class Dashboard extends Component {
     }
 
     refresh = () => {
-        const url = this.props.filter ? "/api/following" : "/api/allposts";
+        const url = this.props.filter ? "/api/auth/following/posts" : "/api/posts";
 
         const config = {
             params: {

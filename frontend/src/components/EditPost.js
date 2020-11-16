@@ -35,7 +35,7 @@ export class EditPost extends Component {
         };
 
         axios
-            .put(`/api/posts/${this.props.postID}`, body, config)
+            .put(`/api/auth/posts/${this.props.postID}`, body, config)
             .then(res => {
                 console.log("success");
                 this.props.refresh();
