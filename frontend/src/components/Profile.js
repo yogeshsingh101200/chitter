@@ -72,8 +72,8 @@ class ProfilePage extends Component {
         return (
             <Card className="profile">
                 <Card.Body>
-                    <div className="custom-card-header d-flex justify-content-between">
-                        <Card.Title>@{this.state.user.username}</Card.Title>
+                    <div className="custom-card-header d-flex justify-content-between align-items-center mb-2">
+                        <Card.Title className="custom-card-title my-auto">@{this.state.user.username}</Card.Title>
                         {
                             this.state.user.username !== this.props.authenticatedUser.username ?
                                 <Follow

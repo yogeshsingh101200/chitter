@@ -3,6 +3,7 @@ import Card from "react-bootstrap/Card";
 import Like from "./Like";
 import EditPost from "./EditPost";
 import { DateTime } from "luxon";
+import { Link } from "react-router-dom";
 
 export class Post extends Component {
 
@@ -37,7 +38,14 @@ export class Post extends Component {
         } else {
             body = (
                 <Card.Body>
-                    <Card.Title>{this.props.author}</Card.Title>
+                    <Card.Title >
+                        <Link
+                            to={`/user/${this.props.author}`}
+                            className="text-decoration-none"
+                        >
+                            {this.props.author}
+                        </Link>
+                    </Card.Title>
                     <Card.Subtitle className="mb-2 text-muted">
                         {
                             DateTime

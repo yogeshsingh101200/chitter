@@ -83,3 +83,8 @@ textarea {
 .stats {
     color: white;
 }
+
+.custom-card-title {
+    font-weight: bold;
+    font-size: 2em;
+}
