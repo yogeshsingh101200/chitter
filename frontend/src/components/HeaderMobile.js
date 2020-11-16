@@ -2,16 +2,18 @@ import React, { Component } from "react";
 import { Link, NavLink } from "react-router-dom";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
-import Dropdown from "react-bootstrap/Dropdown";
-import DropdownButton from "react-bootstrap/DropdownButton";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEllipsisV } from "@fortawesome/free-solid-svg-icons";
 
-export class Header extends Component {
+
+export class HeaderMobile extends Component {
     render() {
         let nav;
+        let expand = "sm";
         if (this.props.isAuthenticated) {
             nav = (
                 <>
-                    <Nav className="mr-auto">
+                    <Nav>
                         <Nav.Link
                             as={NavLink}
                             exact
@@ -28,29 +30,25 @@ export class Header extends Component {
                         >
                             Following
                         </Nav.Link>
-                    </Nav>
-                    <Nav className="ml-auto">
-                        <DropdownButton
-                            title={this.props.user.username}
-                            menuAlign="right"
+                        <Nav.Link
+                            as={NavLink}
+                            exact
+                            to={`/user/${this.props.user.username}`}
+                            className="font-weight-bold"
                         >
-                            <Dropdown.Item
-                                as={NavLink}
-                                exact
-                                to={`/user/${this.props.user.username}`}
-                            >
-                                Profile
-                            </Dropdown.Item>
-                            <Dropdown.Item
-                                onClick={() => { this.props.authentication("LOGOUT"); }}
-                            >
-                                Logout
-                            </Dropdown.Item>
-                        </DropdownButton>
+                            Profile
+                            </Nav.Link>
+                        <Nav.Link
+                            onClick={() => { this.props.authentication("LOGOUT"); }}
+                            className="font-weight-bold"
+                        >
+                            Logout
+                            </Nav.Link>
                     </Nav>
                 </>
             );
         } else {
+            expand = true;
             nav = (
                 <Nav className="ml-auto">
                     <Nav.Link
@@ -71,12 +69,19 @@ export class Header extends Component {
             );
         }
         return (
-            <Navbar bg="dark" variant="dark">
-                <Navbar.Brand as={Link} to="/">MicroBlog</Navbar.Brand>
-                {nav}
-            </Navbar>
+            <>
+                <Navbar expand={expand} bg="dark" variant="dark">
+                    <Navbar.Brand as={Link} to="/">MicroBlog</Navbar.Brand>
+                    <Navbar.Toggle >
+                        <FontAwesomeIcon icon={faEllipsisV} />
+                    </Navbar.Toggle>
+                    <Navbar.Collapse className="nav-mobile">
+                        {nav}
+                    </Navbar.Collapse>
+                </Navbar>
+            </>
         );
     }
 }
 
-export default Header;
+export default HeaderMobile;
