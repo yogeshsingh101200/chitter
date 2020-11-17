@@ -1,6 +1,6 @@
 from .models import Post, Like, Connection, User
 from .serializers import RegisterSerializer, LoginSerializer
-from .serializers import UserSerializer, PostSerializer, LikeSerializer, ConnectionSerializer
+from .serializers import UserSerializer, PostSerializer, LikeSerializer, ConnectionSerializer, ReadableConnectionSerializer
 from .serializers import PublicPostSerializer
 from rest_framework import viewsets, permissions, generics
 from rest_framework.response import Response
@@ -47,7 +47,7 @@ class UserAPI(generics.RetrieveAPIView):
         return self.request.user
 
 
-class FollowingAPI(generics.ListAPIView):
+class FollowingPostAPI(generics.ListAPIView):
     pagination_class = LimitOffsetPagination
     permission_classes = [
         permissions.IsAuthenticated,
@@ -124,3 +124,31 @@ class ConnectionViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+
+class FollowingAPI(generics.ListAPIView):
+    permission_classes = [
+        permissions.AllowAny,
+    ]
+    serializer_class = ReadableConnectionSerializer
+
+    def get_queryset(self):
+        queryset = []
+        username = self.request.query_params.get("username", None)
+        if username is not None:
+            queryset = User.objects.get(username=username).following.all()
+        return queryset
+
+
+class FollowerAPI(generics.ListAPIView):
+    permission_classes = [
+        permissions.AllowAny,
+    ]
+    serializer_class = ReadableConnectionSerializer
+
+    def get_queryset(self):
+        queryset = []
+        username = self.request.query_params.get("username", None)
+        if username is not None:
+            queryset = User.objects.get(username=username).followers.all()
+        return queryset

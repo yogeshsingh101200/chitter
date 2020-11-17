@@ -1,5 +1,5 @@
 from rest_framework import routers
-from .api import RegisterAPI, LoginAPI, UserAPI, FollowingAPI
+from .api import RegisterAPI, LoginAPI, UserAPI, FollowingPostAPI, FollowingAPI, FollowerAPI
 from .api import PostViewSet, LikeViewSet, ConnectionViewSet, PublicPostViewSet, UserViewSet
 from django.urls import path, include
 from knox import views as knox_views
@@ -18,5 +18,7 @@ urlpatterns = [
     path("api/auth/login", LoginAPI.as_view()),
     path("api/auth/logout", knox_views.LogoutView.as_view()),
     path("api/auth/user", UserAPI.as_view()),
-    path("api/auth/following/posts", FollowingAPI.as_view()),
+    path("api/auth/following/posts", FollowingPostAPI.as_view()),
+    path("api/following", FollowingAPI.as_view()),
+    path("api/followers", FollowerAPI.as_view())
 ]

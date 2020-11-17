@@ -80,3 +80,12 @@ class PublicPostSerializer(serializers.ModelSerializer):
 
     def get_like_count(self, post):
         return post.likes.count()
+
+
+class ReadableConnectionSerializer(serializers.ModelSerializer):
+    user = serializers.StringRelatedField()
+    follows = serializers.StringRelatedField()
+
+    class Meta:
+        model = Connection
+        fields = "__all__"
