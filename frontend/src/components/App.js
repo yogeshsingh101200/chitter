@@ -7,7 +7,7 @@ import {
     Switch,
     Route,
 } from "react-router-dom";
-import Dashboard from "./Dashboard";
+import Feed from "./Feed";
 import axios from "axios";
 import Profile from "./Profile";
 import HeaderMobile from "./HeaderMobile";
@@ -105,7 +105,7 @@ class App extends React.Component {
                 </MediaQuery>
                 <Switch>
                     <Route exact path="/">
-                        <Dashboard
+                        <Feed
                             isAuthenticated={this.state.isAuthenticated}
                             user={this.state.user}
                             filter={false}
@@ -114,7 +114,7 @@ class App extends React.Component {
                     <Route exact path={"/following"}>
                         {
                             this.state.isAuthenticated ?
-                                <Dashboard
+                                <Feed
                                     isAuthenticated={this.state.isAuthenticated}
                                     user={this.state.user}
                                     filter={true}

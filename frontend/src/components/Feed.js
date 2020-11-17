@@ -3,7 +3,7 @@ import { Redirect } from "react-router-dom";
 import CreatePost from "./CreatePost";
 import PostList from "./PostList";
 
-export class Dashboard extends Component {
+export class Feed extends Component {
     render() {
         if (!this.props.isAuthenticated) {
             return <Redirect to="/login" />;
@@ -31,4 +31,4 @@ export class Dashboard extends Component {
     }
 }
 
-export default Dashboard;
+export default Feed;
