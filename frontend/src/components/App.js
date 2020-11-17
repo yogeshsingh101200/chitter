@@ -111,17 +111,20 @@ class App extends React.Component {
                             filter={false}
                         />
                     </Route>
-                    <Route exact path="/following">
-                        <Dashboard
-                            isAuthenticated={this.state.isAuthenticated}
-                            user={this.state.user}
-                            filter={true}
-                        />
+                    <Route exact path={"/following"}>
+                        {
+                            this.state.isAuthenticated ?
+                                <Dashboard
+                                    isAuthenticated={this.state.isAuthenticated}
+                                    user={this.state.user}
+                                    filter={true}
+                                /> : ""
+                        }
                     </Route>
                     <Route exact path={`/user/:username`}>
                         <Profile
                             isAuthenticated={this.state.isAuthenticated}
-                            authenticatedUser={this.state.user}
+                            user={this.state.user}
                         />
                     </Route>
                     <Route exact path="/login">

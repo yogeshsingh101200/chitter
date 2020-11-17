@@ -87,8 +87,8 @@ class PublicPostViewSet(viewsets.ReadOnlyModelViewSet):
         queryset = Post.objects.all().order_by("-created_at")
         author = self.request.query_params.get("author", None)
         if author is not None:
-            queryset = Post.objects.filter(
-                author=author).order_by("-created_at")
+            queryset = User.objects.get(
+                username=author).posts.order_by("-created_at")
         return queryset
 
 

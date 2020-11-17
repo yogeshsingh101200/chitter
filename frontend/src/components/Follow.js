@@ -47,7 +47,7 @@ export class Follow extends Component {
                     id: res.data.id,
                     isFollowed: true
                 });
-                this.props.refreshProfileCard();
+                this.props.refresh();
             })
             .catch(err => {
                 console.log(err.response.status);
@@ -70,7 +70,7 @@ export class Follow extends Component {
                     id: null,
                     isFollowed: false
                 });
-                this.props.refreshProfileCard();
+                this.props.refresh();
             })
             .catch(err => {
                 console.log(err.response.status);
