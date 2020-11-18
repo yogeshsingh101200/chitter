@@ -1,5 +1,5 @@
 import React from "react";
-import HashLoader from "react-spinners/HashLoader";
+import BounceLoader from "react-spinners/BounceLoader";
 import { css } from "@emotion/core";
 
 export default function Spinner() {
@@ -9,7 +9,7 @@ export default function Spinner() {
     `;
 
     return (
-        <HashLoader
+        <BounceLoader
             css={override}
             color={"#375a7f"}
         />
