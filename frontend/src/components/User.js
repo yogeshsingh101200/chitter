@@ -2,37 +2,9 @@ import React, { Component } from "react";
 import Card from "react-bootstrap/Card";
 import Follow from "./Follow";
 import axios from "axios";
-import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
-import ListGroup from "react-bootstrap/ListGroup";
-import { Link } from "react-router-dom";
-
-function ModalList(props) {
-    const listItems = props.list.map(item => (
-        <ListGroup.Item key={item} as={Link} className="text-decoration-none" to={`/user/${item}`}>
-            {item}
-        </ListGroup.Item>
-    ));
-
-    return (
-        <Modal
-            show={props.show}
-            onHide={props.handleClose}
-            centered
-            size="sm"
-        >
-            <Modal.Body>
-                <ListGroup>
-                    {listItems}
-                </ListGroup>
-            </Modal.Body>
-            <Button variant="success" onClick={props.handleClose}>
-                Close
-            </Button>
-        </Modal>
-    );
-}
-
+import Spinner from "./Spinner";
+import FollowingModal from "./FollowingModal";
+import FollowersModal from "./FollowersModal";
 
 export class User extends Component {
 
@@ -41,14 +13,15 @@ export class User extends Component {
 
         this.state = {
             user: null,
-            following: [],
-            followers: [],
             showFollowing: false,
-            showFollowers: false
+            showFollowers: false,
+            loading: true
         };
     }
 
     refresh = () => {
+        this.setState({ loading: true });
+
         const config = {
             params: {
                 "username": this.props.username
@@ -58,35 +31,10 @@ export class User extends Component {
         axios
             .get("/api/users", config)
             .then(res => {
-                this.setState({ user: res.data[0] });
+                this.setState({ user: res.data[0], loading: false });
             })
             .catch(err => {
-                console.log(err.response.status);
-            });
-
-        axios
-            .get("/api/following", config)
-            .then(res => {
-                const list = [];
-                res.data.forEach(record => {
-                    list.push(record.follows);
-                });
-                this.setState({ following: list });
-            })
-            .catch(err => {
-                console.log(err.response.status);
-            });
-
-        axios
-            .get("/api/followers", config)
-            .then(res => {
-                const list = [];
-                res.data.forEach(record => {
-                    list.push(record.user);
-                });
-                this.setState({ followers: list });
-            })
-            .catch(err => {
+                this.setState({ loading: false });
                 console.log(err.response.status);
             });
     };
@@ -95,8 +43,18 @@ export class User extends Component {
         this.refresh();
     }
 
+    showFollowing = () => {
+
+    };
+
+    showFollowers = () => {
+
+    };
+
     render() {
-        if (this.state.user) {
+        if (this.state.loading) {
+            return <Spinner />;
+        } else if (this.state.user) {
             return (
                 <>
                     <Card className="profile">
@@ -126,21 +84,21 @@ export class User extends Component {
                             </Card.Link>
                         </Card.Body>
                     </Card>
-                    <ModalList
+                    <FollowingModal
                         show={this.state.showFollowing}
-                        list={this.state.following}
                         handleClose={() => this.setState({ showFollowing: false })}
+                        {...this.props}
                     />
-                    <ModalList
+                    <FollowersModal
                         show={this.state.showFollowers}
-                        list={this.state.followers}
                         handleClose={() => this.setState({ showFollowers: false })}
+                        {...this.props}
                     />
                 </>
             );
         } else {
             return (
-                <div>No user!</div>
+                <h2 className="my-3 mx-auto" style={{ width: "max-content" }}>Not found :(</h2>
             );
         }
     }

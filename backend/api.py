@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from knox.models import AuthToken
 from rest_framework.pagination import LimitOffsetPagination
 import operator
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class RegisterAPI(generics.GenericAPIView):
@@ -87,8 +88,11 @@ class PublicPostViewSet(viewsets.ReadOnlyModelViewSet):
         queryset = Post.objects.all().order_by("-created_at")
         author = self.request.query_params.get("author", None)
         if author is not None:
-            queryset = User.objects.get(
-                username=author).posts.order_by("-created_at")
+            try:
+                user = User.objects.get(username=author)
+                queryset = user.posts.order_by("-created_at")
+            except ObjectDoesNotExist:
+                queryset = []
         return queryset
 
 
@@ -133,10 +137,14 @@ class FollowingAPI(generics.ListAPIView):
     serializer_class = ReadableConnectionSerializer
 
     def get_queryset(self):
-        queryset = []
         username = self.request.query_params.get("username", None)
         if username is not None:
-            queryset = User.objects.get(username=username).following.all()
+            try:
+                user = User.objects.get(username=username)
+                queryset = user.following.all()
+            except ObjectDoesNotExist:
+                queryset = []
+
         return queryset
 
 
@@ -147,8 +155,11 @@ class FollowerAPI(generics.ListAPIView):
     serializer_class = ReadableConnectionSerializer
 
     def get_queryset(self):
-        queryset = []
         username = self.request.query_params.get("username", None)
         if username is not None:
-            queryset = User.objects.get(username=username).followers.all()
+            try:
+                user = User.objects.get(username=username)
+                queryset = user.followers.all()
+            except ObjectDoesNotExist:
+                queryset = []
         return queryset

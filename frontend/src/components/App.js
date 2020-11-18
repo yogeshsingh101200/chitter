@@ -10,6 +10,7 @@ import {
 import Feed from "./Feed";
 import axios from "axios";
 import Profile from "./Profile";
+import Spinner from "./Spinner";
 
 class App extends React.Component {
 
@@ -18,7 +19,8 @@ class App extends React.Component {
 
         this.state = {
             user: null,
-            isAuthenticated: false
+            isAuthenticated: false,
+            loading: true,
         };
     }
 
@@ -37,13 +39,17 @@ class App extends React.Component {
                 .then(res => {
                     this.setState({
                         user: res.data,
-                        isAuthenticated: true
+                        isAuthenticated: true,
+                        loading: false
                     });
                 })
                 .catch(err => {
                     localStorage.removeItem("token");
+                    this.setState({ loading: false });
                     console.log(err.response.status);
                 });
+        } else {
+            this.setState({ loading: false });
         }
     }
 
@@ -85,52 +91,60 @@ class App extends React.Component {
     };
 
     render() {
-        return (
-            <Router>
-                <Header
-                    isAuthenticated={this.state.isAuthenticated}
-                    user={this.state.user}
-                    authentication={this.authentication}
-                />
-                <Switch>
-                    <Route exact path="/">
-                        <Feed
-                            isAuthenticated={this.state.isAuthenticated}
-                            user={this.state.user}
-                            filter={false}
-                        />
-                    </Route>
-                    <Route exact path={"/following"}>
-                        {
-                            this.state.isAuthenticated ?
-                                <Feed
-                                    isAuthenticated={this.state.isAuthenticated}
-                                    user={this.state.user}
-                                    filter={true}
-                                /> : ""
-                        }
-                    </Route>
-                    <Route exact path={`/user/:username`}>
-                        <Profile
-                            isAuthenticated={this.state.isAuthenticated}
-                            user={this.state.user}
-                        />
-                    </Route>
-                    <Route exact path="/login">
-                        <Login
-                            isAuthenticated={this.state.isAuthenticated}
-                            authentication={this.authentication}
-                        />
-                    </Route>
-                    <Route exact path="/register">
-                        <Register
-                            isAuthenticated={this.state.isAuthenticated}
-                            authentication={this.authentication}
-                        />
-                    </Route>
-                </Switch>
-            </Router >
-        );
+        if (this.state.loading) {
+            return (
+                <div className="d-flex align-items-center h-100">
+                    <Spinner />
+                </div>
+            );
+        } else {
+            return (
+                <Router>
+                    <Header
+                        isAuthenticated={this.state.isAuthenticated}
+                        user={this.state.user}
+                        authentication={this.authentication}
+                    />
+                    <Switch>
+                        <Route exact path="/">
+                            <Feed
+                                isAuthenticated={this.state.isAuthenticated}
+                                user={this.state.user}
+                                filter={false}
+                            />
+                        </Route>
+                        <Route exact path={"/following"}>
+                            {
+                                this.state.isAuthenticated ?
+                                    <Feed
+                                        isAuthenticated={this.state.isAuthenticated}
+                                        user={this.state.user}
+                                        filter={true}
+                                    /> : ""
+                            }
+                        </Route>
+                        <Route exact path={`/user/:username`}>
+                            <Profile
+                                isAuthenticated={this.state.isAuthenticated}
+                                user={this.state.user}
+                            />
+                        </Route>
+                        <Route exact path="/login">
+                            <Login
+                                isAuthenticated={this.state.isAuthenticated}
+                                authentication={this.authentication}
+                            />
+                        </Route>
+                        <Route exact path="/register">
+                            <Register
+                                isAuthenticated={this.state.isAuthenticated}
+                                authentication={this.authentication}
+                            />
+                        </Route>
+                    </Switch>
+                </Router >
+            );
+        }
     }
 }
 

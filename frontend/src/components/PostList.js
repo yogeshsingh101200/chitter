@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import Post from "./Post";
 import axios from "axios";
-import Pagination from 'react-bootstrap/Pagination';
+import Pagination from "react-bootstrap/Pagination";
+import Spinner from "./Spinner";
 
 export class PostList extends Component {
     constructor(props) {
@@ -10,11 +11,14 @@ export class PostList extends Component {
             next: false,
             previous: false,
             offset: 0,
-            posts: []
+            posts: [],
+            loading: false
         };
     }
 
     refresh = () => {
+        this.setState({ loading: true });
+
         const config = {
             params: {
                 "limit": 5,
@@ -38,7 +42,8 @@ export class PostList extends Component {
                     {
                         next: res.data.next ? true : false,
                         previous: res.data.previous ? true : false,
-                        posts: res.data.results
+                        posts: res.data.results,
+                        loading: false
                     }
                 );
             })
@@ -86,15 +91,19 @@ export class PostList extends Component {
     };
 
     render() {
-        return (
-            <>
-                {this.renderPosts()}
-                <Pagination className="my-2 justify-content-center">
-                    <Pagination.Item onClick={this.handlePrevious} disabled={!this.state.previous}>Previous</Pagination.Item>
-                    <Pagination.Item onClick={this.handleNext} disabled={!this.state.next}>Next</Pagination.Item>
-                </Pagination>
-            </>
-        );
+        if (this.state.loading) {
+            return <Spinner />;
+        } else {
+            return (
+                <>
+                    {this.renderPosts()}
+                    <Pagination className="my-2 justify-content-center">
+                        <Pagination.Item onClick={this.handlePrevious} disabled={!this.state.previous}>Previous</Pagination.Item>
+                        <Pagination.Item onClick={this.handleNext} disabled={!this.state.next}>Next</Pagination.Item>
+                    </Pagination>
+                </>
+            );
+        }
     }
 }
 
