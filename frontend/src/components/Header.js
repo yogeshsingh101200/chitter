@@ -2,15 +2,17 @@ import React, { Component } from "react";
 import { Link, NavLink } from "react-router-dom";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
-import Dropdown from "react-bootstrap/Dropdown";
-import DropdownButton from "react-bootstrap/DropdownButton";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEllipsisV } from "@fortawesome/free-solid-svg-icons";
 
-export class Header extends Component {
-    render() {
-        let nav;
-        if (this.props.isAuthenticated) {
-            nav = (
-                <>
+export function Header(props) {
+    let nav;
+    let expand = "sm";
+
+    if (props.isAuthenticated) {
+        nav = (
+            <>
+                <Navbar.Collapse>
                     <Nav className="mr-auto">
                         <Nav.Link
                             as={NavLink}
@@ -19,7 +21,7 @@ export class Header extends Component {
                             className="font-weight-bold"
                         >
                             Feed
-                        </Nav.Link>
+                            </Nav.Link>
                         <Nav.Link
                             as={NavLink}
                             exact
@@ -27,56 +29,60 @@ export class Header extends Component {
                             className="font-weight-bold"
                         >
                             Following
-                        </Nav.Link>
+                            </Nav.Link>
                     </Nav>
                     <Nav className="ml-auto">
-                        <DropdownButton
-                            title={this.props.user.username}
-                            menuAlign="right"
+                        <Nav.Link
+                            as={NavLink}
+                            exact
+                            to={`/user/${props.user.username}`}
+                            className="font-weight-bold"
                         >
-                            <Dropdown.Item
-                                as={NavLink}
-                                exact
-                                to={`/user/${this.props.user.username}`}
-                            >
-                                Profile
-                            </Dropdown.Item>
-                            <Dropdown.Item
-                                onClick={() => { this.props.authentication("LOGOUT"); }}
-                            >
-                                Logout
-                            </Dropdown.Item>
-                        </DropdownButton>
+                            {props.user.username}
+                        </Nav.Link>
+                        <Nav.Link
+                            as={Link}
+                            to="#"
+                            className="font-weight-bold"
+                            onClick={() => { props.authentication("LOGOUT"); }}
+                        >
+                            Logout
+                            </Nav.Link>
                     </Nav>
-                </>
-            );
-        } else {
-            nav = (
-                <Nav className="ml-auto">
-                    <Nav.Link
-                        as={NavLink}
-                        to="/login"
-                        className="font-weight-bold"
-                    >
-                        Login
+                </Navbar.Collapse>
+            </>
+        );
+    } else {
+        expand = true;
+        nav = (
+            <Nav className="ml-auto">
+                <Nav.Link
+                    as={NavLink}
+                    to="/login"
+                    className="font-weight-bold"
+                >
+                    Login
                     </Nav.Link>
-                    <Nav.Link
-                        as={NavLink}
-                        to="/register"
-                        className="font-weight-bold"
-                    >
-                        Register
+                <Nav.Link
+                    as={NavLink}
+                    to="/register"
+                    className="font-weight-bold"
+                >
+                    Register
                     </Nav.Link>
-                </Nav>
-            );
-        }
-        return (
-            <Navbar bg="dark" variant="dark">
-                <Navbar.Brand as={Link} to="/">MicroBlog</Navbar.Brand>
-                {nav}
-            </Navbar>
+            </Nav>
         );
     }
+
+    return (
+        <Navbar bg="dark" variant="dark" className="p-2" expand={expand}>
+            <Navbar.Brand as={Link} to="/">MicroBlog</Navbar.Brand>
+            <Navbar.Toggle >
+                <FontAwesomeIcon icon={faEllipsisV} />
+            </Navbar.Toggle>
+            {nav}
+        </Navbar>
+    );
 }
 
 export default Header;

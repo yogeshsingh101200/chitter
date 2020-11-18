@@ -10,8 +10,6 @@ import {
 import Feed from "./Feed";
 import axios from "axios";
 import Profile from "./Profile";
-import HeaderMobile from "./HeaderMobile";
-import MediaQuery from "react-responsive";
 
 class App extends React.Component {
 
@@ -89,20 +87,11 @@ class App extends React.Component {
     render() {
         return (
             <Router>
-                <MediaQuery minDeviceWidth={768}>
-                    <Header
-                        isAuthenticated={this.state.isAuthenticated}
-                        user={this.state.user}
-                        authentication={this.authentication}
-                    />
-                </MediaQuery>
-                <MediaQuery maxDeviceWidth={767}>
-                    <HeaderMobile
-                        isAuthenticated={this.state.isAuthenticated}
-                        user={this.state.user}
-                        authentication={this.authentication}
-                    />
-                </MediaQuery>
+                <Header
+                    isAuthenticated={this.state.isAuthenticated}
+                    user={this.state.user}
+                    authentication={this.authentication}
+                />
                 <Switch>
                     <Route exact path="/">
                         <Feed
