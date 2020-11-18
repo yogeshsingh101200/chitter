@@ -14,31 +14,32 @@ export class Feed extends Component {
     }
 
     render() {
-        if (!this.props.isAuthenticated) {
-            return <Redirect to="/login" />;
-        } else {
-            if (!this.props.filter) {
-                return (
-                    <>
-                        <CreatePost refresh={() => this.setState(state => ({ deltaPost: state.deltaPost + 1 }))} />
-                        <PostList
-                            url="/api/posts"
-                            delta={this.state.deltaPost}
-                            {...this.props}
-                        />
-                    </>
-                );
-            } else {
-                return (
+        if (!this.props.filter) {
+            return (
+                <>
+                    {
+                        this.props.isAuthenticated ?
+                            <CreatePost refresh={() => this.setState(state => ({ deltaPost: state.deltaPost + 1 }))} />
+                            : ""
+                    }
                     <PostList
-                        url="/api/auth/following/posts"
+                        url="/api/posts"
+                        delta={this.state.deltaPost}
                         {...this.props}
-                        token={localStorage.getItem("token")}
                     />
-                );
-            }
+                </>
+            );
+        } else {
+            return (
+                <PostList
+                    url="/api/auth/following/posts"
+                    {...this.props}
+                    token={localStorage.getItem("token")}
+                />
+            );
         }
     }
 }
+
 
 export default Feed;

@@ -18,7 +18,7 @@ class Like extends Component {
 
     componentDidMount() {
         this.state.likes.forEach(like => {
-            if (like.by == this.props.user) {
+            if (this.props.user && like.by === this.props.user) {
                 this.setState({
                     likeID: like.id,
                     className: "active",
@@ -87,7 +87,7 @@ class Like extends Component {
                 <div className="p-0">
                     <FontAwesomeIcon
                         icon={faHeart}
-                        onClick={this.handleClick}
+                        onClick={this.props.user ? this.handleClick : void (0)}
                         className={this.state.className}
                     />
                 </div>

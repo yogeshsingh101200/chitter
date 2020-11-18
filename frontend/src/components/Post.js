@@ -58,13 +58,13 @@ export class Post extends Component {
                     </Card.Text>
                     <div className="d-flex flex-row align-items-center">
                         <Like
-                            user={this.props.user.id}
+                            user={this.props.user ? this.props.user.id : false}
                             post={this.props.id}
                             likeCount={this.props.likeCount}
                             likes={this.props.likes}
                         />
                         {
-                            this.props.author === this.props.user.username ?
+                            this.props.user && this.props.author === this.props.user.username ?
                                 <Card.Link
                                     href="#"
                                     className="ml-auto"
