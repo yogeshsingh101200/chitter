@@ -4,7 +4,7 @@ from django.utils import timezone
 
 
 class User(AbstractUser):
-    pass
+    username = models.CharField(max_length=15, unique=True)
 
 
 class Post(models.Model):

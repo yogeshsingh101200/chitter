@@ -61,7 +61,7 @@ export class User extends Component {
                     <Card className="profile">
                         <Card.Body>
                             <div className="custom-card-header d-flex justify-content-between align-items-center mb-2">
-                                <Card.Title className="custom-card-title my-auto">@{this.state.user.username}</Card.Title>
+                                <Card.Title className="custom-card-title my-auto text-wrap">@{this.state.user.username}</Card.Title>
                                 {
                                     this.props.isAuthenticated && this.state.user.username !== this.props.user.username ?
                                         <Follow
