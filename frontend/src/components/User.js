@@ -5,6 +5,7 @@ import axios from "axios";
 import Spinner from "./Spinner";
 import FollowingModal from "./FollowingModal";
 import FollowersModal from "./FollowersModal";
+import NotFound from "./NotFound";
 
 export class User extends Component {
 
@@ -98,7 +99,7 @@ export class User extends Component {
             );
         } else {
             return (
-                <h2 className="my-3 mx-auto" style={{ width: "max-content" }}>Not found :(</h2>
+                <NotFound />
             );
         }
     }

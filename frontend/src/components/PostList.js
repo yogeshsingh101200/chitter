@@ -93,7 +93,7 @@ export class PostList extends Component {
     render() {
         if (this.state.loading) {
             return <Spinner />;
-        } else {
+        } else if (this.state.posts.length > 0) {
             return (
                 <>
                     {this.renderPosts()}
@@ -103,6 +103,8 @@ export class PostList extends Component {
                     </Pagination>
                 </>
             );
+        } else {
+            return "";
         }
     }
 }

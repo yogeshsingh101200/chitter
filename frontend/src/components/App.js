@@ -11,6 +11,7 @@ import Feed from "./Feed";
 import axios from "axios";
 import Profile from "./Profile";
 import Spinner from "./Spinner";
+import NotFound from "./NotFound";
 
 class App extends React.Component {
 
@@ -113,16 +114,17 @@ class App extends React.Component {
                                 filter={false}
                             />
                         </Route>
-                        <Route exact path={"/following"}>
-                            {
-                                this.state.isAuthenticated ?
+                        {
+                            this.state.isAuthenticated ?
+                                <Route exact path={"/following"}>
                                     <Feed
                                         isAuthenticated={this.state.isAuthenticated}
                                         user={this.state.user}
                                         filter={true}
-                                    /> : ""
-                            }
-                        </Route>
+                                    />
+                                </Route>
+                                : ""
+                        }
                         <Route exact path={`/user/:username`}>
                             <Profile
                                 isAuthenticated={this.state.isAuthenticated}
@@ -140,6 +142,9 @@ class App extends React.Component {
                                 isAuthenticated={this.state.isAuthenticated}
                                 authentication={this.authentication}
                             />
+                        </Route>
+                        <Route>
+                            <NotFound />
                         </Route>
                     </Switch>
                 </Router >
