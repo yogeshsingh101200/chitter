@@ -69,6 +69,9 @@ export class PostList extends Component {
     };
 
     componentDidUpdate(prevProps, prevState) {
+        if ("delta" in this.props && prevProps.delta !== this.props.delta) {
+            this.refresh();
+        }
         if (prevState.offset !== this.state.offset) {
             this.refresh();
         }
