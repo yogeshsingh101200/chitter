@@ -3,23 +3,17 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
 import Card from "react-bootstrap/Card";
+import { Formik } from "formik";
+import * as Yup from "yup";
+
+const schema = Yup.object({
+    content: Yup.string()
+        .required("Can't be empty!")
+        .max(250, "Post can't exceed 250 characters!")
+});
 
 export class EditPost extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            content: this.props.content
-        };
-    }
-
-    handleChange = e => {
-        this.setState({ [e.target.name]: e.target.value });
-    };
-
-    handleSubmit = e => {
-        e.preventDefault();
-
+    handleSubmit = (values, actions) => {
         const token = localStorage.getItem("token");
 
         const config = {
@@ -30,45 +24,64 @@ export class EditPost extends Component {
             }
         };
 
-        const body = {
-            "content": this.state.content
-        };
+        const body = JSON.stringify(values);
 
         axios
             .put(`/api/auth/posts/${this.props.postID}`, body, config)
             .then(() => {
                 this.props.refresh();
-                this.props.goBack();
             })
             .catch(exception => {
                 console.log("exception", exception);
                 console.log("exception.response", exception.response);
+                actions.setSubmitting(false);
             });
     };
 
     render() {
         return (
             <Card.Body>
-                <Form onSubmit={this.handleSubmit}>
-                    <Form.Control
-                        name="content"
-                        as="textarea"
-                        rows={4}
-                        value={this.state.content}
-                        onChange={this.handleChange}
-                    />
-                    <Button variant="success" className="mt-2" type="submit">
-                        Edit
-                    </Button>
-                    <Button
-                        variant="secondary"
-                        className="mt-2 ml-2"
-                        type="button"
-                        onClick={this.props.goBack}
-                    >
-                        Back
-                    </Button>
-                </Form>
+                <Formik
+                    initialValues={{ content: this.props.content }}
+                    validationSchema={schema}
+                    onSubmit={this.handleSubmit}
+                >
+                    {formik => (
+                        <Form onSubmit={formik.handleSubmit}>
+                            <Form.Control
+                                name="content"
+                                as="textarea"
+                                rows={4}
+                                isValid={formik.touched.content && !formik.errors.content}
+                                isInvalid={formik.touched.content && formik.errors.content}
+                                {...formik.getFieldProps("content")}
+                            />
+                            <Form.Control.Feedback type="valid">
+                                Looks Good!
+                                </Form.Control.Feedback>
+                            <Form.Control.Feedback type="invalid">
+                                {formik.errors.content}
+                            </Form.Control.Feedback>
+                            <Button
+                                variant="success"
+                                className="mt-2"
+                                type="submit"
+                                disabled={formik.isSubmitting}
+                            >
+                                Edit
+                            </Button>
+                            <Button
+                                variant="secondary"
+                                className="mt-2 ml-2"
+                                type="button"
+                                onClick={this.props.goBack}
+                                disabled={formik.isSubmitting}
+                            >
+                                Back
+                            </Button>
+                        </Form>
+                    )}
+                </Formik>
             </Card.Body>
         );
     }
