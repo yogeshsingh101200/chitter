@@ -20,6 +20,9 @@ export class FollowingModal extends Component {
         const config = {
             params: {
                 "username": this.props.username
+            },
+            headers = {
+                "Accept": "application/json"
             }
         };
 

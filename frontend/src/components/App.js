@@ -66,7 +66,9 @@ class App extends React.Component {
             case "LOGOUT":
                 const token = localStorage.getItem("token");
                 const config = {
-                    headers: {}
+                    headers: {
+                        "Accept": "application/json"
+                    }
                 };
 
                 if (token) {

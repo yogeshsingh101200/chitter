@@ -24,7 +24,9 @@ export class PostList extends Component {
                 "limit": 5,
                 "offset": this.state.offset
             },
-            headers: {}
+            headers = {
+                "Accept": "application/json"
+            }
         };
 
         if ("username" in this.props) {

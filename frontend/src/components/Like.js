@@ -34,7 +34,8 @@ class Like extends Component {
             const config = {
                 headers: {
                     "Authorization": `Token ${token}`,
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
                 }
             };
 
