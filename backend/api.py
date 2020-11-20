@@ -69,8 +69,8 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = UserSerializer
 
     def get_queryset(self):
+        queryset = User.objects.all()
         username = self.request.query_params.get('username', None)
-        queryset = []
         if username is not None:
             queryset = User.objects.filter(username=username)
         return queryset
