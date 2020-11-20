@@ -40,7 +40,7 @@ class Like extends Component {
 
             axios
                 .delete(`/api/auth/likes/${this.state.likeID}`, config)
-                .then(res => {
+                .then(() => {
                     this.setState(state => ({
                         likeID: null,
                         likeCount: state.likeCount - 1,
@@ -48,8 +48,9 @@ class Like extends Component {
                         isLiked: false
                     }));
                 })
-                .catch(err => {
-                    console.log(err.response.status);
+                .catch(exception => {
+                    console.log("exception", exception);
+                    console.log("exception.response", exception.response);
                 });
         } else {
             const token = localStorage.getItem("token");
@@ -75,8 +76,9 @@ class Like extends Component {
                         isLiked: true
                     }));
                 })
-                .catch(err => {
-                    console.log(err.response.status, err.response.data, this.props.key);
+                .catch(exception => {
+                    console.log("exception", exception);
+                    console.log("exception.response", exception.response);
                 });
         }
     };

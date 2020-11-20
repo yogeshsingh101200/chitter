@@ -32,9 +32,10 @@ export class FollowersModal extends Component {
                 });
                 this.setState({ followers: list, loading: false });
             })
-            .catch(err => {
+            .catch(exception => {
                 this.setState({ loading: false });
-                console.log(err.response.status);
+                console.log("exception", exception);
+                console.log("exception.response", exception.response);
             });
     }
 

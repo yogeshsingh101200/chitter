@@ -49,8 +49,9 @@ export class Follow extends Component {
                 });
                 this.props.refresh();
             })
-            .catch(err => {
-                console.log(err.response.status);
+            .catch(exception => {
+                console.log("exception", exception);
+                console.log("exception.response", exception.response);
             });
     };
 
@@ -65,15 +66,16 @@ export class Follow extends Component {
 
         axios
             .delete(`/api/auth/connections/${this.state.id}`, config)
-            .then(res => {
+            .then(() => {
                 this.setState({
                     id: null,
                     isFollowed: false
                 });
                 this.props.refresh();
             })
-            .catch(err => {
-                console.log(err.response.status);
+            .catch(exception => {
+                console.log("exception", exception);
+                console.log("exception.response", exception.response);
             });
     };
 

@@ -47,8 +47,10 @@ export class PostList extends Component {
                     }
                 );
             })
-            .catch(err => {
-                console.log(err.response.status, err.response.data);
+            .catch(exception => {
+                this.setState({ loading: false });
+                console.log("exception", exception);
+                console.log("exception.response", exception.response);
             });
     };
 

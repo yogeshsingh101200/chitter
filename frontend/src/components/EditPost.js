@@ -36,13 +36,13 @@ export class EditPost extends Component {
 
         axios
             .put(`/api/auth/posts/${this.props.postID}`, body, config)
-            .then(res => {
-                console.log("success");
+            .then(() => {
                 this.props.refresh();
                 this.props.goBack();
             })
-            .catch(err => {
-                console.log(err.response.status, err.response.data);
+            .catch(exception => {
+                console.log("exception", exception);
+                console.log("exception.response", exception.response);
             });
     };
 

@@ -44,10 +44,11 @@ class App extends React.Component {
                         loading: false
                     });
                 })
-                .catch(err => {
+                .catch(exception => {
                     localStorage.removeItem("token");
                     this.setState({ loading: false });
-                    console.log(err.response.status);
+                    console.log("exception", exception);
+                    console.log("exception.response", exception.response);
                 });
         } else {
             this.setState({ loading: false });
@@ -81,8 +82,9 @@ class App extends React.Component {
                             isAuthenticated: false
                         });
                     })
-                    .catch(err => {
-                        console.log("err.res.status=", err.response.status, "err.res.data=", err.response.data);
+                    .catch(exception => {
+                        console.log("exception", exception);
+                        console.log("exception.response", exception.response);
                     });
                 break;
             default:

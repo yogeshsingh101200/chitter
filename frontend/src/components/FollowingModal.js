@@ -32,9 +32,10 @@ export class FollowingModal extends Component {
                 });
                 this.setState({ following: list, loading: false });
             })
-            .catch(err => {
+            .catch(exception => {
                 this.setState({ loading: false });
-                console.log(err.response.status);
+                console.log("exception", exception);
+                console.log("exception.response", exception.response);
             });
     }
 
