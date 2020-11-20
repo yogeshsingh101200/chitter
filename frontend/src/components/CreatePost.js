@@ -2,24 +2,17 @@ import React, { Component } from "react";
 import { Button, Form } from "react-bootstrap";
 import axios from "axios";
 import Card from "react-bootstrap/Card";
+import { Formik } from "formik";
+import * as Yup from "yup";
+
+const schema = Yup.object({
+    content: Yup.string()
+        .required("Can't be empty!")
+        .max(250, "Post can't exceed 250 characters!")
+});
 
 export class CreatePost extends Component {
-
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            content: ""
-        };
-    }
-
-    handleChange = e => {
-        this.setState({ [e.target.name]: e.target.value });
-    };
-
-    handleSubmit = e => {
-        e.preventDefault();
-
+    handleSubmit = (values, actions) => {
         const token = localStorage.getItem("token");
 
         const config = {
@@ -30,19 +23,17 @@ export class CreatePost extends Component {
             }
         };
 
-        const body = {
-            "content": this.state.content
-        };
+        const body = JSON.stringify(values);
 
         axios
             .post("api/auth/posts", body, config)
-            .then(res => {
-                console.log("success");
-                this.setState({ content: "" });
+            .then(() => {
                 this.props.refresh();
             })
-            .catch(err => {
-                console.log(err.response.status, err.response.data);
+            .catch(exception => {
+                console.log("exception", exception);
+                console.log("exception.response", exception.response);
+                actions.setSubmitting(false);
             });
     };
 
@@ -50,19 +41,35 @@ export class CreatePost extends Component {
         return (
             <Card className="post create-post">
                 <Card.Body>
-                    <Form onSubmit={this.handleSubmit}>
-                        <Form.Control
-                            name="content"
-                            as="textarea"
-                            rows={4}
-                            value={this.state.content}
-                            onChange={this.handleChange}
-                            placeholder="Write something..."
-                        />
-                        <Button variant="primary" className="mt-2" type="submit">
-                            Post
-                        </Button>
-                    </Form>
+                    <Formik
+                        initialValues={{ content: "" }}
+                        validationSchema={schema}
+                        onSubmit={this.handleSubmit}
+                    >
+                        {formik => (
+                            <Form onSubmit={formik.handleSubmit} noValidate>
+                                <Form.Control
+                                    name="content"
+                                    as="textarea"
+                                    rows={4}
+                                    placeholder="Write something..."
+                                    isValid={formik.touched.content && !formik.errors.content}
+                                    isInvalid={formik.touched.content && formik.errors.content}
+                                    {...formik.getFieldProps("content")}
+                                />
+                                <Form.Control.Feedback type="valid">
+                                    Looks Good!
+                                </Form.Control.Feedback>
+                                <Form.Control.Feedback type="invalid">
+                                    {formik.errors.content}
+                                </Form.Control.Feedback>
+
+                                <Button variant="primary" className="mt-2" type="submit" disabled={formik.isSubmitting}>
+                                    Post
+                                </Button>
+                            </Form>
+                        )}
+                    </Formik>
                 </Card.Body>
             </Card>
         );
