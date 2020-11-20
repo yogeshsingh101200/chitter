@@ -103,8 +103,12 @@ export class PostList extends Component {
                     </Pagination>
                 </>
             );
+        } else if (this.props.filter) {
+            return (<h3 className="w-100 text-center text-muted mt-3">
+                No Posts to see, You haven't followed anyone!
+            </h3>);
         } else {
-            return "";
+            return null;
         }
     }
 }
