@@ -21,7 +21,7 @@ export class FollowersModal extends Component {
             params: {
                 "username": this.props.username
             },
-            headers = {
+            headers: {
                 "Accept": "application/json"
             }
         };
