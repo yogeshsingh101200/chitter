@@ -1,1 +1,3 @@
-# micro-blogging site like twitter
+# Chitter
+
+Twitter like micro-blogging website for making posts and following user.
