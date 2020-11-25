@@ -21,7 +21,7 @@ export function Header(props) {
                             className="font-weight-bold"
                         >
                             Feed
-                            </Nav.Link>
+                        </Nav.Link>
                         <Nav.Link
                             as={NavLink}
                             exact
@@ -29,7 +29,7 @@ export function Header(props) {
                             className="font-weight-bold"
                         >
                             Following
-                            </Nav.Link>
+                        </Nav.Link>
                     </Nav>
                     <Nav className="ml-auto">
                         <Nav.Link
@@ -47,7 +47,7 @@ export function Header(props) {
                             onClick={() => { props.authentication("LOGOUT"); }}
                         >
                             Logout
-                            </Nav.Link>
+                        </Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
             </>
@@ -62,21 +62,21 @@ export function Header(props) {
                     className="font-weight-bold"
                 >
                     Login
-                    </Nav.Link>
+                </Nav.Link>
                 <Nav.Link
                     as={NavLink}
                     to="/register"
                     className="font-weight-bold"
                 >
                     Register
-                    </Nav.Link>
+                </Nav.Link>
             </Nav>
         );
     }
 
     return (
         <Navbar bg="dark" variant="dark" className="p-2" expand={expand}>
-            <Navbar.Brand as={Link} to="/">MicroBlog</Navbar.Brand>
+            <Navbar.Brand as={Link} to="/">Chitter</Navbar.Brand>
             <Navbar.Toggle >
                 <FontAwesomeIcon icon={faEllipsisV} />
             </Navbar.Toggle>

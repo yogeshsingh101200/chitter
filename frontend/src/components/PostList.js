@@ -21,7 +21,7 @@ export class PostList extends Component {
 
         const config = {
             params: {
-                "limit": 5,
+                "limit": 15,
                 "offset": this.state.offset
             },
             headers: {
@@ -87,11 +87,11 @@ export class PostList extends Component {
     }
 
     handlePrevious = () => {
-        this.setState(state => ({ offset: state.offset - 5 }));
+        this.setState(state => ({ offset: state.offset - 15 }));
     };
 
     handleNext = () => {
-        this.setState(state => ({ offset: state.offset + 5 }));
+        this.setState(state => ({ offset: state.offset + 15 }));
     };
 
     render() {
