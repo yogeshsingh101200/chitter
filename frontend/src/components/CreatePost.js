@@ -28,13 +28,16 @@ export class CreatePost extends Component {
         axios
             .post("api/auth/posts", body, config)
             .then(() => {
+                actions.resetForm();
                 this.props.refresh();
             })
             .catch(exception => {
                 console.log("exception", exception);
                 console.log("exception.response", exception.response);
-                actions.setSubmitting(false);
-            });
+            })
+            .finally(
+                actions.setSubmitting(false)
+            );
     };
 
     render() {
@@ -55,7 +58,8 @@ export class CreatePost extends Component {
                                     placeholder="Write something..."
                                     isValid={formik.touched.content && !formik.errors.content}
                                     isInvalid={formik.touched.content && formik.errors.content}
-                                    {...formik.getFieldProps("content")}
+                                    value={formik.values.content}
+                                    onChange={formik.handleChange}
                                 />
                                 <Form.Control.Feedback type="valid">
                                     Looks Good!

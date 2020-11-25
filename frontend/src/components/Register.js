@@ -47,8 +47,10 @@ export class Register extends Component {
                     console.log("exception", exception);
                     console.log("exception.response", exception.response);
                 }
-                actions.setSubmitting(false);
-            });
+            })
+            .finally(
+                actions.setSubmitting(false)
+            );
     };
 
     render() {
@@ -74,7 +76,8 @@ export class Register extends Component {
                                     autoComplete="off"
                                     isValid={formik.touched.username && !formik.errors.username}
                                     isInvalid={formik.touched.username && formik.errors.username}
-                                    {...formik.getFieldProps("username")}
+                                    value={formik.values.username}
+                                    onChange={formik.handleChange}
                                 />
                                 <Form.Control.Feedback type="valid">
                                     Looks Good!
@@ -91,7 +94,8 @@ export class Register extends Component {
                                     name="password"
                                     isValid={formik.touched.password && !formik.errors.password}
                                     isInvalid={formik.touched.password && formik.errors.password}
-                                    {...formik.getFieldProps("password")}
+                                    value={formik.values.password}
+                                    onChange={formik.handleChange}
                                 />
                                 <Form.Control.Feedback type="valid">
                                     Looks Good!
@@ -108,7 +112,8 @@ export class Register extends Component {
                                     name="confirmPassword"
                                     isValid={formik.touched.confirmPassword && !formik.errors.confirmPassword}
                                     isInvalid={formik.touched.confirmPassword && formik.errors.confirmPassword}
-                                    {...formik.getFieldProps("confirmPassword")}
+                                    value={formik.values.confirmPassword}
+                                    onChange={formik.handleChange}
                                 />
                                 <Form.Control.Feedback type="valid">
                                     Looks Good!

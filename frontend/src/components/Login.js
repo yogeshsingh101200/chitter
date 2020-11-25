@@ -37,8 +37,10 @@ export class Login extends Component {
                     console.log("exception", exception);
                     console.log("exception.response", exception.response);
                 }
-                actions.setSubmitting(false);
-            });
+            })
+            .finally(
+                actions.setSubmitting(false)
+            );
     };
 
     render() {
@@ -71,7 +73,8 @@ export class Login extends Component {
                                         isValid={formik.touched.username && !formik.errors.username}
                                         isInvalid={formik.touched.username && formik.errors.username}
                                         autoComplete="off"
-                                        {...formik.getFieldProps("username")}
+                                        value={formik.values.username}
+                                        onChange={formik.handleChange}
                                     />
                                     <Form.Control.Feedback type="valid">
                                         Looks Good!
@@ -89,7 +92,8 @@ export class Login extends Component {
                                         placeholder="Enter password"
                                         isValid={formik.touched.password && !formik.errors.password}
                                         isInvalid={formik.touched.password && formik.errors.password}
-                                        {...formik.getFieldProps("password")}
+                                        value={formik.values.password}
+                                        onChange={formik.handleChange}
                                     />
                                     <Form.Control.Feedback type="valid">
                                         Looks Good!

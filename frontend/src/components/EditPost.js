@@ -34,8 +34,10 @@ export class EditPost extends Component {
             .catch(exception => {
                 console.log("exception", exception);
                 console.log("exception.response", exception.response);
-                actions.setSubmitting(false);
-            });
+            })
+            .finally(
+                actions.setSubmitting(false)
+            );
     };
 
     render() {
@@ -54,7 +56,8 @@ export class EditPost extends Component {
                                 rows={4}
                                 isValid={formik.touched.content && !formik.errors.content}
                                 isInvalid={formik.touched.content && formik.errors.content}
-                                {...formik.getFieldProps("content")}
+                                value={formik.values.content}
+                                onChange={formik.handleChange}
                             />
                             <Form.Control.Feedback type="valid">
                                 Looks Good!
