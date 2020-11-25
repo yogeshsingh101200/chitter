@@ -106,3 +106,13 @@ textarea {
     margin-top: .25rem;
     color: #e74c3c;
 }
+
+.not-found {
+    width: 50%;
+}
+
+@media (max-width: 480px) {
+    .not-found {
+        width: 75%;
+    }
+}
