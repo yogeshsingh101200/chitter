@@ -2,6 +2,8 @@
 
 Twitter like micro-blogging website for making posts and following user.
 
+[Visit](https://chitter-reactjs-django.herokuapp.com/)
+
 # How to run locally
 - Install python dependencies
 ```bash
